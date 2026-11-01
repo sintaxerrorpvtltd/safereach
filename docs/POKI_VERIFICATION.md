@@ -40,11 +40,23 @@ demo module; the public Pages artifact contains no Node server.
 
 ## Publication and limits
 
-Target website: https://sintaxerrorpvtltd.github.io/safereach/
+**Live website:** https://sintaxerrorpvtltd.github.io/safereach/
 
-GitHub Pages publication and public URL verification must be confirmed from the
-deployment run and browser before claiming the site is live; the final handoff
-records that result. No real login, OAuth, Instagram/Telegram adapter, remote
+Implementation commit `91b5531` and Pages workflow commit `0735884` were published.
+[Pages deployment 41347544641](https://github.com/sintaxerrorpvtltd/safereach/actions/runs/41347544641)
+and [repository checks 41347544597](https://github.com/sintaxerrorpvtltd/safereach/actions/runs/41347544597)
+passed, including the 23 tests, dependency audit and the existing Docker build.
+
+The public `index.html`, `styles.css`, `poki.mjs`, `demo-state.mjs` and mascot SVG
+all returned HTTP 200 with appropriate content types and byte-for-byte equality to
+the reviewed local files. The actual public site rendered Poki branding, roadmap
+status and the setup guide. On its 390px mobile layout, both fictional acceptances,
+preview and approval produced the expected local hello and `hello` animation with
+no horizontal overflow or browser errors/warnings. Desktop public rendering was
+also inspected and its screenshot saved as a local verification artifact. Temporary
+emulation settings were cleared afterward.
+
+No real login, OAuth, Instagram/Telegram adapter, remote
 friend delivery, installed embed SDK, active-Codex animation, paid Pro, production
 backend, account or messaging credential was configured. Claude Code and OpenCode
 remain candidates, not verified Poki integrations. WhatsApp is outside the MVP.
