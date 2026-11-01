@@ -22,7 +22,7 @@ test('desktop edge popup stays inside normal, negative-origin and small work are
 
 test('desktop package only includes runtime assets and dependencies', () => {
   for (const file of ['', '/desktop/main.mjs', '/web/overlay.html', '/dist/src/poke-server.js', '/node_modules/zod/index.js']) assert.equal(packageFileAllowed(file), true, file);
-  for (const file of ['/output/private.png', '/.env', '/profile.private.json', '/desktop/secrets.json', '/desktop/helpers.test.mjs', '/dist/test/poke.test.js', '/web/photo.png', '/src/poke.ts', '/registry/india.json']) assert.equal(packageFileAllowed(file), false, file);
+  for (const file of ['/node_modules/.cache', '/node_modules/.cache/electron/platform.zip', '/output/private.png', '/.env', '/profile.private.json', '/desktop/secrets.json', '/desktop/helpers.test.mjs', '/dist/test/poke.test.js', '/web/photo.png', '/src/poke.ts', '/registry/india.json']) assert.equal(packageFileAllowed(file), false, file);
 });
 
 test('connected desktop only permits exact HTTPS Convex and Clerk development origins', () => {

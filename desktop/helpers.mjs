@@ -25,6 +25,7 @@ export function packageFileAllowed(path, connected = false) {
   if (!clean) return true;
   if (connected && (['apps', 'apps/connected', 'apps/connected/dist', 'apps/connected/dist/assets'].includes(clean) || /^apps\/connected\/dist\/(index\.html|runtime-config\.json|assets\/[\w.-]+\.(js|css|svg|png|webp|woff2))$/.test(clean))) return true;
   if (['package.json', 'package-lock.json', 'LICENSE', 'NOTICE', 'desktop', 'web', 'dist', 'dist/src', 'node_modules'].includes(clean)) return true;
+  if (clean === 'node_modules/.cache' || clean.startsWith('node_modules/.cache/')) return false;
   if (clean.startsWith('node_modules/')) return true;
   if (/^dist\/src\/[\w-]+\.js$/.test(clean)) return true;
   if (/^desktop\/(main\.mjs|helpers\.mjs|preload\.cjs|overlay-preload\.cjs|connected-entry\.mjs|tray\.png)$/.test(clean)) return true;
