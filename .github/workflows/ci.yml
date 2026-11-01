@@ -15,3 +15,18 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run check
       - run: docker build -t safereach:test .
+  connected:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/connected/package-lock.json
+      - run: npm --prefix apps/connected ci --ignore-scripts
+      - run: node apps/connected/setup.mjs
+      - run: npm --prefix apps/connected test
+      - run: npm --prefix apps/connected run build
+      - run: npm --prefix apps/connected audit --omit=dev
