@@ -5,6 +5,27 @@ resource proposals. Keep changes small; open an issue for material architecture
 changes. Do not include real contacts, messages, locations, transcripts, credentials
 or screenshots of private information in issues, fixtures, logs or PRs.
 
+## Community features and maintainer review
+
+This is an open community project maintained under **Syntax Error Pvt Ltd**, in
+`sintaxerrorpvtltd/safereach`. Everyone may suggest features, discuss designs, report
+bugs and open pull requests. Contributions are welcome from first-time contributors
+and experienced maintainers; company affiliation is not required.
+
+Describe the user problem, proposed change and a way to verify it. For a substantial
+feature, discuss the scope in an issue before spending time on implementation.
+Maintainers review the code and privacy/consent impact, run the relevant tests and
+try the actual flow where appropriate. A feature is merged only after review and
+verification; a submitted PR or passing test alone is not a release promise. Scope,
+security and maintainability can still require revisions or a declined proposal.
+There is no automatic merge or deployment policy. Contributors can iterate openly
+with maintainers, and accepted improvements become part of the public project.
+
+Poke is an ordinary social hello; do not require medical terminology, emergency
+language or a request for help to use it. Exact automatic pop-in to an active Codex
+chat remains a feasibility question. Proposals must distinguish working protocol,
+host support and actual device evidence. See docs/POKE_PRD.md.
+
 Run `npm ci --ignore-scripts` and `npm run check`. Add a focused regression test
 for consent, expiry, revocation, storage and resource-ranking changes. Use only
 fictional recipients. Never test against emergency services or unsolicited people.

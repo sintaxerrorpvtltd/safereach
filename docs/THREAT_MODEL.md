@@ -1,5 +1,8 @@
 # SafeReach threat model — v0.1
 
+This is the SMS/resource baseline. The optional later Poke prototype has its own
+current model in [POKE_THREAT_MODEL.md](POKE_THREAT_MODEL.md).
+
 ## Overview
 
 SafeReach is a model-neutral local mock handoff service. An assistant can offer an ordinary check-in, but cannot approve it through MCP. A trusted human operator reviews the exact recipient and one of three fixed texts. All sends are simulations; no provider credentials or remote listener exist. This model maps actual source, not production readiness. A fresh-context architecture reviewer inspected the core source read-only; the primary agent verified its material claims. This is not an independent security certification.

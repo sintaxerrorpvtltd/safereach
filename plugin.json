@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "safereach", "version": "0.1.0",
-  "description": "Offer a calm trusted-person check-in. Local mock-only prototype; explicit human approval required.",
+  "description": "Trusted-person check-ins and an opt-in Poke inbox. Local feasibility prototype; SMS is mock-only. Explicit human approval required.",
   "author": { "name": "Syntax Error Pvt Ltd" },
   "repository": "https://github.com/sintaxerrorpvtltd/safereach",
   "license": "Apache-2.0",

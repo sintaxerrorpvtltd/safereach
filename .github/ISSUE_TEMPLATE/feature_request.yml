@@ -1,0 +1,26 @@
+name: Suggest a feature
+description: Anyone can propose an improvement to SafeReach or Poke.
+title: 'Feature: '
+body:
+  - type: markdown
+    attributes:
+      value: 'Thanks for helping build this community project under Syntax Error Pvt Ltd. Do not include private chats, real contact details, tokens, or personal information.'
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to do?
+      description: Explain the user problem in ordinary language.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Your proposed feature
+      description: A small example, design sketch or implementation idea is welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: How could we verify it works?
+      description: Include relevant consent, pairing, accessibility, host or device considerations. Mark untested assumptions.

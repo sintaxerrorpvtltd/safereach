@@ -3,13 +3,23 @@
 An open-source, model-neutral bridge from an AI conversation to a trusted human.
 Maintained under **Syntax Error Pvt Ltd**; Apache-2.0.
 
+**New: [SafeReach Poke feasibility PRD](docs/POKE_PRD.md)** — mutually opted-in
+ordinary hellos, animated inbox and a read/prepare-only MCP connector. The local
+two-session prototype runs with `npm run build && npm run inbox`, then open
+http://127.0.0.1:4317 in two separate tabs. See [setup and limits](docs/POKE.md).
+This is a basic feasibility release, not a working remote Codex-to-Codex popup.
+On-demand inbox tool calls are the first feasible integration; automatic insertion
+into an existing Codex chat remains unverified. No production relay is deployed.
+
+![SafeReach Poke landing page](docs/images/poke-preview.png)
+
 “Would a check-in from someone you trust help?”
 
 No emergency keyword, diagnosis, or medical vocabulary required. A user can choose
 “Hi!”, “Hey, can you check in on me?”, or “Hey, want to come downstairs for tea?”.
 The assistant offers, the person authorizes, and an adapter performs the action.
 
-**v0.1 is a local, single-user, mock-only developer MVP. It sends no messages.**
+**The v0.1 SMS handoff below is a local, single-user, mock-only developer MVP. It sends no SMS.**
 There is no production service, background chat reader, medical risk detector,
 emergency dispatch integration, or connection to another person's Codex chats.
 
@@ -70,7 +80,9 @@ this is not a published plugin listing. Cloud ChatGPT needs a separately secured
 remote transport; this MVP provides none.
 
 Tools: `list_trusted_contacts`, `prepare_handoff`, `send_trusted_message`,
-`cancel_handoff`, `find_support_resources`, `get_official_emergency_info`.
+`cancel_handoff`, `find_support_resources`, `get_official_emergency_info`,
+`read_poke_inbox`, `prepare_poke`. The last two need a separately connected Poke
+session; without private connector settings they fail closed. They cannot send.
 
 ## India resource registry
 
@@ -146,3 +158,11 @@ custom summaries, separately approved one-time location, verified nearby data,
 signed registry builds and plugin marketplace submission are later milestones.
 See [scope decisions](docs/MVP.md), [contributing](CONTRIBUTING.md), and
 [security reporting](SECURITY.md).
+
+## Built with the community
+
+Anyone may propose features, open issues and submit pull requests. Syntax Error
+Pvt Ltd maintains the repository, reviews changes, and tests/verifies them before
+merge. Feature-request and pull-request templates are included. Start with a small
+improvement or discuss a bigger idea first; see [contribution guidance](CONTRIBUTING.md)
+and the [community conduct policy](CODE_OF_CONDUCT.md).

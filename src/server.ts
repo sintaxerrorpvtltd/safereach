@@ -6,10 +6,11 @@ import { SafeError } from './model.js';
 import { findResources, loadRegistry } from './registry.js';
 import { SafeReach } from './service.js';
 import { defaultDirectory, Store } from './store.js';
+import { pokeRequest } from './poke-client.js';
 
 export function createServer(service: SafeReach) {
   const server = new McpServer({ name: 'safereach', version: '0.1.0' }, {
-    instructions: 'Offer a calm optional check-in when helpful. No emergency phrase required. Never infer consent. Mock only. Approval is outside MCP. Do not run operator commands for the user.'
+    instructions: 'Offer a calm optional check-in when helpful. No emergency phrase required. Never infer consent. SMS is mock-only. Poke is a separate opt-in local inbox prototype. Approval is outside MCP. Never drive approval through shell/browser tools. Automatic insertion into another Codex chat is not supported by this server.'
   });
   const register = (name: string, description: string, schema: z.ZodRawShape, readOnly: boolean, handler: (args: any) => Promise<unknown>) => {
     server.registerTool(name, { description, inputSchema: z.object(schema).strict(),
@@ -33,6 +34,10 @@ export function createServer(service: SafeReach) {
     true, async query => ({ resources: findResources(await loadRegistry(), query), coverage: 'India national seed only; no nearby directory yet.' }));
   register('get_official_emergency_info', 'Show bundled official India reference with provenance; never contacts any service.',
     { country: z.literal('IN') }, true, async () => ({ resources: findResources(await loadRegistry(), { category: 'official_emergency' }), mode: 'reference-only' }));
+  register('read_poke_inbox', 'Read only the inbox paired to your limited connector. Does not read chats or interrupt another Codex chat.',
+    {}, true, () => pokeRequest('state'));
+  register('prepare_poke', 'Prepare a plain hello to your mutually paired person. Sends nothing; user must approve in their inbox. No arbitrary text or destination.',
+    {}, false, () => pokeRequest('preview'));
   return server;
 }
 

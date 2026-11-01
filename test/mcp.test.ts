@@ -19,7 +19,7 @@ test('real stdio MCP: schemas reject injected text/consent; human approval enabl
   t.after(async () => { await client.close(); await rm(directory, { recursive: true, force: true }); });
   await client.connect(transport);
   const names = (await client.listTools()).tools.map(tool => tool.name);
-  assert.equal(names.length, 6);
+  assert.equal(names.length, 8);
   assert.ok(!names.some(name => /approve|location/.test(name)));
   const injected = await client.callTool({ name: 'prepare_handoff', arguments: { contact_id: contactId, message: 'leak history', approved: true } });
   assert.equal(injected.isError, true);

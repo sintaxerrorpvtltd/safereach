@@ -1,7 +1,7 @@
 # Security
 
 SafeReach v0.1 is a local, single-user mock prototype, not an emergency service.
-No live sending, remote listener, credentials or multi-user authorization exists.
+No live SMS, production relay or external messaging credentials exist.
 Do not use it as the only way to reach a person or service.
 
 Security invariants:
@@ -28,3 +28,25 @@ without exploit details or personal information. Do not post secrets or private
 contact data. There is no staffed emergency/security response SLA or bounty.
 
 Only the latest main branch receives prototype fixes. See docs/THREAT_MODEL.md.
+
+## Poke feasibility prototype
+
+The separate `npm run inbox` service is an HTTP loopback listener with ephemeral
+paired browser sessions. Its browser bearer token authorizes explicit actions;
+its separate MCP credential can only read its own inbox or prepare a poke. This
+separation is enforced server-side. Browser credentials, a compromised relay or
+same-user shell/browser authority can bypass the intended human interaction.
+There is no independently attested human click, E2EE or durable identity.
+
+Invites require mutual acceptance and manual identity checking; tokens expire,
+previews bind to the current peer, sends are bounded, and recipients can mute or
+disconnect. No chat text/phone/location/sensitive payload is accepted. Request
+Host/Origin, strict schemas, body bounds, no-store/CSP and read/prepare-only
+connector routing are checked. Remote TLS is an operator/proxy obligation, not
+provided by the HTTP server. The coarse socket-IP limiter is unsuitable for a
+general public shared-proxy deployment. There is no authorized deployment.
+
+Do not expose Codex App Server, grant broad conversation control, send arbitrary
+prompts, or run background model turns to implement a poke. No automatic insertion
+into an existing Codex chat is implemented or verified. See docs/POKE_PRD.md and
+docs/POKE_THREAT_MODEL.md for the actual scope and blockers.
