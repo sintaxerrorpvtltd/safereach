@@ -15,5 +15,5 @@ export default defineConfig(({ mode }) => {
       this.emitFile({ type: 'asset', fileName: 'runtime-config.json', source: JSON.stringify({ convexUrl: env.VITE_CONVEX_URL || null, clerkPublishableKey: env.VITE_CLERK_PUBLISHABLE_KEY || null, clerkIssuer: env.VITE_CLERK_JWT_ISSUER_DOMAIN || null }) });
     }
   };
-  return { base: './', plugins: [runtime], test: { environment: 'edge-runtime', include: ['convex/**/*.test.ts'] } as InlineConfig, server: { port: 5174, strictPort: true }, build: { outDir: 'dist' } };
+  return { base: './', plugins: [runtime], test: { environment: 'edge-runtime', include: ['convex/**/*.test.ts', 'src/**/*.test.ts'] } as InlineConfig, server: { port: 5174, strictPort: true }, build: { outDir: 'dist' } };
 });
