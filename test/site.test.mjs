@@ -58,7 +58,7 @@ test('Pages artifact is a static allowlist with local assets and no visitor-data
   assert.match(html, /Poki — by Sintax Error/); assert.match(html, /connect-src 'none'/);
   assert.match(html, /Some1 stays a separate commercial product/);
   for (const [, id] of html.matchAll(/href="#([^"]+)"/g)) assert.ok(html.includes(`id="${id}"`), `Missing section ${id}`);
-  for (const asset of [...html.matchAll(/(?:src|href)="(\.\/[^"#]+)"/g)].map(match => match[1])) if (asset !== './app/') await lstat(new URL(asset, root));
+  for (const asset of [...html.matchAll(/(?:src|href)="(\.\/[^"#]+)"/g)].map(match => match[1])) if (!asset.startsWith('./app/')) await lstat(new URL(asset, root));
   const client = await readFile(new URL('poki.mjs', root), 'utf8');
   assert.doesNotMatch(client, /\b(?:fetch|XMLHttpRequest|WebSocket|localStorage|sessionStorage|sendBeacon)\b|document\.cookie|innerHTML/);
   const css = await readFile(new URL('styles.css', root), 'utf8');

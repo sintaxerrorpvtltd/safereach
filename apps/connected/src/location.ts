@@ -1,4 +1,5 @@
 export function appHome(href: string) {
   const url = new URL(href);
-  return `${url.origin}${url.pathname}`;
+  // Keep auth returns off a previously cached GitHub Pages entry document.
+  return `${url.origin}${url.pathname}?poki=auth2`;
 }
