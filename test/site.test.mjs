@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir, lstat } from 'node:fs/promises';
 import { test } from 'node:test';
-import { PokiDemo } from '../site/demo-state.mjs';
+import { PokiDemo, nearestStoryBeat } from '../site/demo-state.mjs';
 
 const paired = () => { const demo = new PokiDemo(); demo.pair('alex'); demo.pair('sam'); return demo; };
 test('Poki requires two explicit fictional acceptances; preparation alone has no event', () => {
@@ -64,4 +64,23 @@ test('Pages artifact is a static allowlist with local assets and no visitor-data
   const css = await readFile(new URL('styles.css', root), 'utf8');
   assert.match(css, /prefers-reduced-motion/);
   assert.doesNotMatch(css, /animation[^;{}]*\binfinite\b/);
+});
+
+test('story follows the closest reading beat in both scroll directions', () => {
+  assert.equal(nearestStoryBeat([360, 700, 1040, 1380], 900), 0);
+  assert.equal(nearestStoryBeat([-320, 20, 360, 700], 900), 2);
+  assert.equal(nearestStoryBeat([-660, -320, 20, 360], 900), 3);
+  assert.equal(nearestStoryBeat([20, 360, 700, 1040], 900), 1);
+});
+test('hero offers the documented safe setup and local app requires a preview', async () => {
+  const html = await readFile(new URL('../site/index.html', import.meta.url), 'utf8');
+  const prompt = html.split('spellcheck="false">')[1].split('</textarea>')[0];
+  const guide = await readFile(new URL('../docs/INSTALL.md', import.meta.url), 'utf8');
+  assert.ok(guide.includes(prompt));
+  assert.match(prompt, /new isolated folder/);
+  assert.match(prompt, /npm ci --ignore-scripts/);
+  assert.match(prompt, /remote friends and automatic Codex popups are not enabled/);
+  const client = await readFile(new URL('../web/app.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(client, /api\('poke'/);
+  assert.match(client, /api\('preview', \{\}\)/);
 });

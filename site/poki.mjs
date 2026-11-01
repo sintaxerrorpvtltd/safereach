@@ -1,4 +1,4 @@
-import { PokiDemo, PEOPLE } from './demo-state.mjs';
+import { PokiDemo, PEOPLE, nearestStoryBeat } from './demo-state.mjs';
 
 const demo = new PokiDemo();
 const $ = id => document.getElementById(id);
@@ -75,3 +75,33 @@ $('reset-demo').addEventListener('click', () => run(() => {
 }));
 window.addEventListener('pagehide', () => { clearTimeout(expiryTimer); for (const timer of timers.values()) clearTimeout(timer); });
 render();
+
+const installPrompt = $('install-prompt');
+$('copy-install').addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(installPrompt.value);
+    $('copy-status').textContent = 'Copied. Paste this into a new Codex chat to start local setup.';
+  } catch {
+    installPrompt.focus(); installPrompt.select();
+    $('copy-status').textContent = 'Select the instruction and copy it manually with ⌘C or Ctrl+C.';
+  }
+});
+
+const storyStage = document.querySelector('.story-stage');
+const storyBeats = [...document.querySelectorAll('[data-story]')];
+const storyLines = ['What if I could just say hi?', 'Both people choose to connect.', 'Preview → approve → a little hi!', 'Your idea could be next.'];
+const storyLabels = ['01 / THE IDEA', '02 / MUTUAL CHOICE', '03 / THE LOCAL HELLO', '04 / BUILT IN THE OPEN'];
+let storyFrame;
+function updateStory() {
+  storyFrame = undefined;
+  const closest = nearestStoryBeat(storyBeats.map(beat => beat.getBoundingClientRect().top), innerHeight);
+  storyStage.dataset.pose = String(closest);
+  $('story-bubble').textContent = storyLines[closest];
+  $('story-caption').textContent = storyLabels[closest];
+  storyBeats.forEach((beat, i) => beat.classList.toggle('active', i === closest));
+}
+function scheduleStory() { if (storyFrame === undefined) storyFrame = requestAnimationFrame(updateStory); }
+window.addEventListener('scroll', scheduleStory, { passive: true });
+window.addEventListener('resize', scheduleStory);
+window.addEventListener('pagehide', () => { if (storyFrame !== undefined) cancelAnimationFrame(storyFrame); });
+updateStory();

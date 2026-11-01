@@ -45,3 +45,8 @@ export class PokiDemo {
     return event;
   }
 }
+
+// Select by reading position so scrolling backward follows the same story.
+export function nearestStoryBeat(tops, viewportHeight) {
+  return tops.reduce((closest, top, i) => Math.abs(top - viewportHeight * .4) < Math.abs(tops[closest] - viewportHeight * .4) ? i : closest, 0);
+}

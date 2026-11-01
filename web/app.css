@@ -457,3 +457,8 @@ summary {
     will-change:auto
   }
 }
+
+.profile { border-block:1px solid var(--line); margin-top:16px; padding:0 0 5px; }
+.profile strong { display:block; margin-top:8px; overflow-wrap:anywhere; }
+.scope ol { padding-left:20px; }
+.scope li { margin:5px 0; }

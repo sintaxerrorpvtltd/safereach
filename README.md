@@ -3,7 +3,7 @@
 <img src="site/assets/poki.svg" alt="Poki, the little blue waving companion" width="140">
 
 **A tiny poke. A little closer.** A playful, opt-in companion experiment with a
-public static site and a fictional, explicit-consent demo. Maintained under
+public static site, a fictional demo, and a working local pairing workspace. Maintained under
 **Sintax Error** in the existing `sintaxerrorpvtltd/safereach` repository.
 
 [Website](https://sintaxerrorpvtltd.github.io/safereach/) ·
@@ -23,6 +23,7 @@ service, signup, price or purchase available now.
 | Static site, locally drawn Poki mascot/logo, responsive UI | Implemented; published through GitHub Pages |
 | Two fictional people explicitly pairing, previewing and approving “Hi!” | Implemented in one tab; no real messages |
 | Local demo DND, block, decline, expiry, reset and reduced motion | Implemented |
+| Local Poki workspace: temporary profile, one reciprocal friend, preview/send, animation, mute/disconnect | Implemented; run `npm run poki` |
 | Earlier local MCP / SafeReach Poke developer reference | Experimental; retained separately |
 | Remote friend delivery or animated pop-in to an active Codex chat | Planned / unverified |
 | Installable website embed SDK and cross-site identity | Planned; no copy-and-paste SDK shipped |
@@ -35,30 +36,35 @@ service, signup, price or purchase available now.
 This is an ordinary social hello experiment. No medical diagnosis, dispatch claim,
 personal crisis story or emergency guarantee is part of the Poki experience.
 
-## Try the static site locally
+## Start here: give this to Codex
+
+> Set up Poki from https://github.com/sintaxerrorpvtltd/safereach in a new isolated folder. Read docs/INSTALL.md first. Check Node 22+, run npm ci --ignore-scripts and npm test, then npm run poki. Open the local inbox and walk me through pairing two separate tabs and approving a hello. Do not deploy, configure credentials, or change my global Codex settings. Tell me clearly that remote friends and automatic Codex popups are not enabled.
+
+Or install manually with Node.js 22+:
 
 ```sh
 git clone https://github.com/sintaxerrorpvtltd/safereach.git
 cd safereach
-python3 -m http.server 4321 --bind 127.0.0.1 --directory site
+npm ci --ignore-scripts
+npm test
+npm run poki
 ```
 
-Open [localhost:4321](http://127.0.0.1:4321). No Node build, backend or account is
-needed to try the static site. On the page:
+Open [your local Poki workspace](http://127.0.0.1:4317). Create a test profile,
+invite a second profile in a separately opened browser tab, accept the connection,
+and preview/approve **“Hi!”**. Your profile and connected friend appear in that
+workspace. Mute and disconnect are available there too.
 
-1. Accept pairing as each fixed fictional person, Alex and Sam.
-2. Prepare one “Hi!” and review the exact sender and recipient.
-3. Approve the fictional hello to see Poki's finite animation in the other panel.
-4. Try Decline, Do Not Disturb, block, reverse direction and Reset / unpair.
+[Full installation and first-hello guide](docs/INSTALL.md) includes port conflicts,
+independent-tab setup and agent instructions. This is a working local browser app,
+not an automatic Codex plugin install. No global configuration or credentials are
+needed. Restarting the server clears temporary profiles, pairings and hellos.
+**Your remote friend cannot connect to a localhost invitation.**
 
-You control both sides. Nothing leaves the tab. It does not contact your friend,
-connect two browsers, read Codex conversations or register real contact details.
-Refresh discards the demo. Preview expiry is 60 seconds; history is bounded.
-
-The website also explains the future **Sign in → choose connection → guided setup
-→ test** journey and includes per-adapter guides. These are guides/status only,
-not fake working login/OAuth/connect controls. Company service policies remain
-[draft technical requirements](docs/POLICY_REQUIREMENTS.md), not approved legal terms.
+To preview only the public landing page, visit the [website](https://sintaxerrorpvtltd.github.io/safereach/).
+Its fictional Alex/Sam demo stays in one tab and uses no account. You can also
+serve it locally with `python3 -m http.server 4321 --bind 127.0.0.1 --directory site`.
+The website does not host the local workspace or real profiles.
 
 ## Open core, optional Pro, separate Some1
 
@@ -120,6 +126,7 @@ friend delivery or physical-device acceptance.
 
 ## Documentation and earlier work
 
+- [Install Poki and test your first hello](docs/INSTALL.md)
 - [Poki implementation-ready PRD and status gates](docs/POKI_PRD.md)
 - [Launch/reel concepts and honest demo storyboard](docs/LAUNCH.md)
 - [Draft technical service policy requirements](docs/POLICY_REQUIREMENTS.md)
@@ -131,7 +138,7 @@ friend delivery or physical-device acceptance.
 
 The original scaffold is preserved: TypeScript stdio MCP, trusted-contact model,
 mock SMS adapter, consent gates, audit log and India resource-registry seed.
-`npm start`, `npm run operator -- ...` and `npm run inbox` are separate local
+`npm start` and `npm run operator -- ...` are separate local
 reference workflows described in those documents. None is a live public service.
 
 ## License and stewardship

@@ -183,3 +183,22 @@ Before real sign-in or Pro launch: confirm operator identity/contact, applicable
 service/privacy terms, permitted users/regions, retention/deletion, account security,
 support/abuse reporting, channel permissions/revocation and any payment/cancellation
 terms. This is a gated follow-up, not authorization to collect accounts or payments.
+
+## Action-first local onboarding revision — 2026-11-02
+
+The primary website action copies a plain-language Codex instruction pointing to
+this public repository and `docs/INSTALL.md`. It installs into a new local folder,
+tests, and starts `npm run poki`; it does not install a global plugin or promise
+remote delivery. The website remains static with no visitor identity API.
+
+A single character follows four scroll story beats: idea, mutual connection,
+explicit approval, community contribution. All story copy is readable without
+motion; reduced-motion removes the travel transition. The public demo is fictional.
+
+The working local app shows a temporary first-name profile, one reciprocal friend,
+preview plus Send/Decline, finite receipt animation, recent hellos, mute and
+disconnect. Sessions reset on restart. Hosted/persistent identities, multiple
+friends and remote host notifications are future milestones. See INSTALL for the
+actual supported workflow. Pro benefits are proposed, not purchasable features.
+
+The current mascot is a placeholder awaiting Hemang's choice; see MASCOT.md.

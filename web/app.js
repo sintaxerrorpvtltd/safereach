@@ -30,11 +30,11 @@ function animate(from) {
 async function refresh() {
   if (!token) return;
   state = await api('state');
-  $('onboarding').hidden = true; $('unpaired').hidden = !!state.peer; $('paired').hidden = !state.peer;
+  $('onboarding').hidden = true; $('profile').hidden = false; $('profile-name').textContent = state.name; $('unpaired').hidden = !!state.peer; $('paired').hidden = !state.peer;
   $('connection-status').textContent = state.peer ? (state.muted ? 'CONNECTED · INCOMING MUTED' : 'CONNECTED · YOUR CHOSEN PERSON') : 'YOUR PRIVATE TEST INBOX';
   $('own-name').textContent = `Hello, ${state.name}.`;
   $('friend-name').textContent = state.peer?.name ?? '';
-  $('poke').firstChild.textContent = `Poke ${state.peer?.name ?? 'your friend'} `;
+  $('poke').firstChild.textContent = `Preview hello to ${state.peer?.name ?? 'your friend'} `;
   $('mute').textContent = state.muted ? 'Unmute incoming' : 'Mute incoming';
   $('request').hidden = !state.incoming;
   $('invite').hidden = !!(state.incoming || state.waiting);
@@ -48,8 +48,8 @@ async function refresh() {
     const previews = $('previews'); previews.replaceChildren();
     for (const preview of state.previews) {
     const row = document.createElement('div'); row.className = 'preview';
-    const text = document.createElement('p'); text.textContent = `Your assistant prepared a poke to ${preview.recipient}. Sends only a hello.`;
-    const approve = document.createElement('button'); approve.className = 'secondary'; approve.textContent = `Approve poke to ${preview.recipient}`;
+    const text = document.createElement('p'); text.textContent = `To ${preview.recipient}: “Hi!” Only this hello is shared.`;
+    const approve = document.createElement('button'); approve.className = 'secondary'; approve.textContent = `Send “Hi!” to ${preview.recipient}`;
     approve.addEventListener('click', () => act(async () => { const result = await api('approve', { id: preview.id }); queued(result); }));
     const cancel = document.createElement('button'); cancel.className = 'text-button'; cancel.textContent = 'Decline';
     cancel.addEventListener('click', () => act(() => api('cancel-preview', { id: preview.id })));
@@ -89,7 +89,7 @@ $('copy').addEventListener('click', () => act(async () => {
   catch { $('invite-link').select(); $('notice').textContent = 'Select and copy the invitation link.'; }
 }));
 $('accept').addEventListener('click', () => act(() => api('accept', { id: state.incoming.id })));
-$('poke').addEventListener('click', () => act(async () => queued(await api('poke', {}))));
+$('poke').addEventListener('click', () => act(async () => { await api('preview', {}); $('notice').textContent = 'Preview ready. Nothing sent. Choose Send or Decline below.'; }));
 $('mute').addEventListener('click', () => act(() => api('mute', { muted: !state.muted })));
 for (const id of ['disconnect', 'cancel-connection']) $(id).addEventListener('click', () => act(async () => {
   await api('disconnect', {}); $('notice').textContent = 'Connection ended. No more pokes can be sent between you.'; $('inbox-event').textContent = '';

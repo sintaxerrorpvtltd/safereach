@@ -64,3 +64,22 @@ remain candidates, not verified Poki integrations. WhatsApp is outside the MVP.
 Some1 source/database/auth/voice/services were not changed by this Poki milestone.
 Physical-device and screen-reader acceptance remain unverified. The in-tab consent
 demo is not authentication or independent approval against its browser owner.
+
+## Action-first onboarding checkpoint — 2026-11-02
+
+- Local suite: 25/25 tests; dependency audit: zero vulnerabilities.
+- Clean isolated artifact install (no copied node_modules): npm ci, tests and
+  npm run poki succeed; local server at14317 used for browser verification.
+- Browser: temporary Alex/Sam profiles, invitation, mutual acceptance, exact
+  preview and Send approval, receiving inbox text and actual `hello` animation
+  observed. HTTP smoke also checks disconnect and no delivery on preparation.
+- Website: Copy instruction reports success; scroll story changes the one
+  character's pose; desktop rendering inspected. Mobile390px has no horizontal
+  overflow; reduced-motion yields zero character transition duration. No console
+  warnings/errors in the inspected local site.
+- OpenCodeReview delegation coverage: 9 selected code files reviewed by Codex;
+  4 excluded Markdown files reviewed manually, 13/13 total. No material unresolved
+  issue found. This is not a separate independent security audit.
+- No real remote friend, production identity, social adapter, automatic Codex
+  notification, screen reader or physical mobile device was tested. Current
+  mascot remains a placeholder pending user selection.
