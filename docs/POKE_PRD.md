@@ -7,14 +7,28 @@ removing its original consent/privacy boundaries.
 
 ## Feasibility verdict and stop line
 
-**There is a gap, and a bounded version is feasible now.** An MCP tool can expose
+**A bounded version is feasible, but transport already exists.**
+[Murmur Connect](https://github.com/alexfrmn/murmur) documents remote MCP messaging.
+Its [Codex delivery guide](https://github.com/alexfrmn/murmur/blob/main/docs/codex-desktop-queue-wake.md)
+describes opt-in queuing into a specific participating task, with active-turn
+limitations. We did not install, audit or test it. The bundled local CLI confirms
+that `codex queue --help` exists; only help was run, never a queued message.
+
+Per the user's instruction to avoid duplicating existing work, stop custom
+transport development here. Retain this public PRD, frontend and bounded prototype
+as a feasibility/reference release. Before any further build, assess reusing an
+existing transport and verify chosen-thread behavior on the actual host.
+The remaining potential contribution is the friendly animated, human-authorized
+poke experience. See [related work](RELATED_WORK.md).
+
+For the working local proof, an MCP tool can expose
 an authenticated paired inbox. With a shared HTTPS relay and both people paired,
 the recipient can ask Codex to check that inbox and see the hello in their chat.
 This uses ordinary tool calls, not an unsolicited popup. The local implementation
 tests this protocol; a remote friend test and installation in the stock Codex UI
 remain unperformed. This is a feasibility release, not a completed remote service.
 
-**The exact automatic active-chat poke is not established.** The same plugin on
+**The exact automatic animated active-chat poke is not established here.** The same plugin on
 both machines is not sufficient. ChatGPT already documents subscribed events for
 specific Work/Cloud/dot surfaces; the documentation does not establish the same
 behavior in an arbitrary existing local Codex chat. Codex's App Server supports
@@ -32,8 +46,9 @@ they already cover the exact requested surface.
 
 Sources checked 2026-11-02: [MCP Events](https://developers.openai.com/plugins/build/mcp-events),
 [Codex App Server](https://learn.chatgpt.com/docs/app-server). No product-wide
-claim that no competing messenger exists is made; the identified gap is this
-specific consensual peer-poke flow in stock Codex.
+claim that no competing messenger exists is made. Related implementations exist;
+the remaining unverified requirement is the exact consensual animated social poke
+in the intended Codex UI, without steering or doing unrelated work.
 
 ## Product
 

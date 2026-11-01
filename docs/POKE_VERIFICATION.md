@@ -45,3 +45,8 @@ automatic popup in an existing Codex chat. The PRD has a stop line for that gap.
 
 Docker is included and CI runs its build. The earlier SMS baseline's Docker CI
 passed; Poke's exact-commit CI status must be checked separately after publication.
+
+Published code commit `2fd1eb5` passed GitHub's checks, including all tests,
+dependency audit and Docker build in [run 41343147825](https://github.com/sintaxerrorpvtltd/safereach/actions/runs/41343147825).
+Subsequent related-work/stop-line updates are documentation only. The external
+projects in RELATED_WORK.md were read, not installed, audited or runtime-tested.

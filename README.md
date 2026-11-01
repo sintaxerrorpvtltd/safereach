@@ -10,6 +10,8 @@ http://127.0.0.1:4317 in two separate tabs. See [setup and limits](docs/POKE.md)
 This is a basic feasibility release, not a working remote Codex-to-Codex popup.
 On-demand inbox tool calls are the first feasible integration; automatic insertion
 into an existing Codex chat remains unverified. No production relay is deployed.
+Related remote-messaging implementations already exist; [the reuse decision](docs/RELATED_WORK.md)
+stops further custom transport development pending evaluation of those projects.
 
 ![SafeReach Poke landing page](docs/images/poke-preview.png)
 
