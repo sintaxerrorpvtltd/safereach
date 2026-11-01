@@ -122,6 +122,7 @@ test('parallel attempts cannot execute twice', async t => {
 });
 test('registry validates provenance and excludes stale, C/D and wrong city by default', async () => {
   const [official] = await loadRegistry(); assert.ok(official);
+  assert.ok(Date.parse(official.verifiedAt) <= Date.now(), 'Bundled seed must not have a future verification timestamp.');
   const unverified = { ...official, id: 'unverified', verification: 'D' as const };
   const stale = { ...official, id: 'expired', expiresAt: '2026-11-01T00:00:00.000Z', verifiedAt: '2025-11-01T00:00:00.000Z' };
   const local = { ...official, id: 'local', scope: 'local' as const, city: 'Example City' };

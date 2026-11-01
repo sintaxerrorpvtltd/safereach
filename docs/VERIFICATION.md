@@ -33,6 +33,9 @@ permissions, resource selection and documentation claims. The audit retention
 logic was corrected to preserve recent attempt evidence during preview churn;
 its focused test passes. A fresh-context agent mapped the core architecture
 read-only; the primary agent checked its source claims in the threat model.
+Publication checks also corrected the seed timestamp to the actual UTC instant,
+avoiding a future-dated verification when the maintainer's local date is ahead of
+UTC. A regression assertion covers this.
 
 No unresolved blocking defect was identified for the **local mock-only** scope.
 This is neither independent security certification nor approval for live sending.
