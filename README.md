@@ -1,170 +1,141 @@
-# SafeReach
+# Poki — by Sintax Error
 
-An open-source, model-neutral bridge from an AI conversation to a trusted human.
-Maintained under **Syntax Error Pvt Ltd**; Apache-2.0.
+<img src="site/assets/poki.svg" alt="Poki, the little blue waving companion" width="140">
 
-**New: [SafeReach Poke feasibility PRD](docs/POKE_PRD.md)** — mutually opted-in
-ordinary hellos, animated inbox and a read/prepare-only MCP connector. The local
-two-session prototype runs with `npm run build && npm run inbox`, then open
-http://127.0.0.1:4317 in two separate tabs. See [setup and limits](docs/POKE.md).
-This is a basic feasibility release, not a working remote Codex-to-Codex popup.
-On-demand inbox tool calls are the first feasible integration; automatic insertion
-into an existing Codex chat remains unverified. No production relay is deployed.
-Related remote-messaging implementations already exist; [the reuse decision](docs/RELATED_WORK.md)
-stops further custom transport development pending evaluation of those projects.
+**A tiny poke. A little closer.** A playful, opt-in companion experiment with a
+public static site and a fictional, explicit-consent demo. Maintained under
+**Sintax Error** in the existing `sintaxerrorpvtltd/safereach` repository.
 
-![SafeReach Poke landing page](docs/images/poke-preview.png)
+[Website](https://sintaxerrorpvtltd.github.io/safereach/) ·
+[Poki PRD](docs/POKI_PRD.md) · [Contribute](CONTRIBUTING.md) ·
+[Launch/reel notes](docs/LAUNCH.md) · [Security](SECURITY.md)
 
-“Would a check-in from someone you trust help?”
+Poki is the provisional name, with no trademark-clearance claim. The open-source
+core is Apache-2.0. Optional paid **Poki Pro** is planned; there is no hosted Pro
+service, signup, price or purchase available now.
 
-No emergency keyword, diagnosis, or medical vocabulary required. A user can choose
-“Hi!”, “Hey, can you check in on me?”, or “Hey, want to come downstairs for tea?”.
-The assistant offers, the person authorizes, and an adapter performs the action.
+![Poki public-site preview](docs/images/poki-site.png)
 
-**The v0.1 SMS handoff below is a local, single-user, mock-only developer MVP. It sends no SMS.**
-There is no production service, background chat reader, medical risk detector,
-emergency dispatch integration, or connection to another person's Codex chats.
+## What works, and what does not
 
-## Run locally
+| Capability | Status |
+| --- | --- |
+| Static site, locally drawn Poki mascot/logo, responsive UI | Implemented; published through GitHub Pages |
+| Two fictional people explicitly pairing, previewing and approving “Hi!” | Implemented in one tab; no real messages |
+| Local demo DND, block, decline, expiry, reset and reduced motion | Implemented |
+| Earlier local MCP / SafeReach Poke developer reference | Experimental; retained separately |
+| Remote friend delivery or animated pop-in to an active Codex chat | Planned / unverified |
+| Installable website embed SDK and cross-site identity | Planned; no copy-and-paste SDK shipped |
+| Instagram DMs and Telegram adapters | Planned; no channel accounts or permissions configured |
+| WhatsApp | Outside this MVP |
+| Claude Code and OpenCode | Candidate hosts; no Poki integration verified |
+| Paid Pro identity, managed delivery and advanced administration | Planned; no production backend |
+| Some1 integration | Future first-party Pro customer concept; no integration or source changes |
 
-Requires Node.js 22+ and npm. Dependencies are pinned in package-lock.json.
+This is an ordinary social hello experiment. No medical diagnosis, dispatch claim,
+personal crisis story or emergency guarantee is part of the Poki experience.
+
+## Try the static site locally
+
+```sh
+git clone https://github.com/sintaxerrorpvtltd/safereach.git
+cd safereach
+python3 -m http.server 4321 --bind 127.0.0.1 --directory site
+```
+
+Open [localhost:4321](http://127.0.0.1:4321). No Node build, backend or account is
+needed to try the static site. On the page:
+
+1. Accept pairing as each fixed fictional person, Alex and Sam.
+2. Prepare one “Hi!” and review the exact sender and recipient.
+3. Approve the fictional hello to see Poki's finite animation in the other panel.
+4. Try Decline, Do Not Disturb, block, reverse direction and Reset / unpair.
+
+You control both sides. Nothing leaves the tab. It does not contact your friend,
+connect two browsers, read Codex conversations or register real contact details.
+Refresh discards the demo. Preview expiry is 60 seconds; history is bounded.
+
+The website also explains the future **Sign in → choose connection → guided setup
+→ test** journey and includes per-adapter guides. These are guides/status only,
+not fake working login/OAuth/connect controls. Company service policies remain
+[draft technical requirements](docs/POLICY_REQUIREMENTS.md), not approved legal terms.
+
+## Open core, optional Pro, separate Some1
+
+The site, SVG mascot, demo state module and existing SafeReach/Poke reference code
+remain Apache-2.0. Future public SDK/protocol/consent components are planned as core.
+Community members can propose features, new characters, fixes and tests through
+issues and PRs; maintainers review and verify changes before merge.
+
+Pro may later offer paid hosting, identity, credentials, managed delivery and
+advanced capabilities. Any future proprietary modules will be identified and
+licensed separately. Paid hosting does not itself change a source license, and
+restrictive source-available code will not be called open source.
+
+**Some1.help stays its own commercial restaurant product.** Its application,
+private prompts/business logic, authentication, voice, credentials and customer
+records are not open sourced here. Some1 may use Poki Pro internally later; this
+milestone does not integrate with or change it.
+
+## Architecture and privacy
+
+```text
+site/index.html + styles.css + locally drawn SVG
+                  ↓
+       PokiDemo: fictional, in-tab state
+                  ↓
+    explicit preview → approval → bounded animation
+```
+
+`site/demo-state.mjs` owns demo rules; `site/poki.mjs` renders and handles controls.
+There are no messaging API calls, third-party scripts/fonts, signup forms, visitor
+analytics, cookies, local/session storage, tracking pixels or background workers.
+The CSP disallows data connections. GitHub processes normal static-file requests
+under its own hosting/privacy practices. This is not production authentication or
+end-to-end encryption.
+
+GitHub Pages uploads only `site/`. Existing Node servers, relay state, secrets,
+Some1 source and private files are not part of that artifact. Real delivery would
+need separately reviewed identity, reciprocal contacts, per-send authorization,
+recipient block/DND, abuse controls and an appropriate transport. [Existing
+transports already exist](docs/RELATED_WORK.md); reuse/evaluate them before
+expanding a remote relay. None was installed for this milestone.
+
+## Develop and verify
+
+Requires Node.js 22+ and npm for the existing server and test suite:
 
 ```sh
 npm ci --ignore-scripts
 npm test
-export SAFEREACH_HOME="$HOME/.local/share/safereach"
-npm run operator -- add-contact
-npm start
+npm run check
 ```
 
-Run `npm start` through an MCP client: stdin/stdout carry protocol messages.
-In a separate terminal, add at most five contacts after obtaining their permission.
-No onboarding SMS is sent. Recipient acceptance is currently an operator attestation,
-not a verified two-sided invitation. All sensitive sharing flags are fixed OFF.
+All dependencies remain pinned; the static site adds no dependency. Tests cover
+the real demo state module, artifact contents, consent/replay/expiry, DND/block/reset
+and the earlier local MCP/store/provider/registry boundaries. The existing CI also
+builds Docker. [Poki verification](docs/POKI_VERIFICATION.md) records actual browser,
+public deployment and test evidence; build success alone does not establish remote
+friend delivery or physical-device acceptance.
 
-Use an absolute SAFEREACH_HOME outside the checkout. Default:
-`~/.local/share/safereach`. Do not mount or share this directory with an AI host's
-shell. Examples and tests use fictional contacts, not private conversations.
+## Documentation and earlier work
 
-## Try one check-in
+- [Poki implementation-ready PRD and status gates](docs/POKI_PRD.md)
+- [Launch/reel concepts and honest demo storyboard](docs/LAUNCH.md)
+- [Draft technical service policy requirements](docs/POLICY_REQUIREMENTS.md)
+- [Contribution guide](CONTRIBUTING.md), [community conduct](CODE_OF_CONDUCT.md),
+  [private security reporting](SECURITY.md)
+- [Earlier SafeReach MVP](docs/MVP.md), [original handoff threat model](docs/THREAT_MODEL.md)
+- [Earlier local Poke PRD](docs/POKE_PRD.md), [setup](docs/POKE.md),
+  [threat model](docs/POKE_THREAT_MODEL.md), [verification](docs/POKE_VERIFICATION.md)
 
-1. Assistant calls `list_trusted_contacts`; it receives IDs and names, never phone numbers.
-2. `prepare_handoff({contact_id, template: "hi"})` creates an exact preview valid for five minutes.
-3. Human sees the same recipient/message and uses their own terminal:
-   `npm run operator -- approve <handoff-id>`.
-4. Human types `APPROVE` after reviewing the full destination and text.
-5. `send_trusted_message({handoff_id})` consumes consent once and returns
-   `simulated`, `realMessageSent: false`. No delivery is implied.
+The original scaffold is preserved: TypeScript stdio MCP, trusted-contact model,
+mock SMS adapter, consent gates, audit log and India resource-registry seed.
+`npm start`, `npm run operator -- ...` and `npm run inbox` are separate local
+reference workflows described in those documents. None is a live public service.
 
-`cancel_handoff` withdraws a pending or approved preview.
-`npm run operator -- revoke <contact-id>` revokes contact permission and pending
-actions. `npm run operator -- audit` shows metadata only. Model-supplied `approved:
-true`, phone numbers, free text, location and sensitive summaries are rejected.
-The tool cannot select another destination or edit an approved message.
+## License and stewardship
 
-Approval is outside the MCP interface. **It is not an isolation boundary against
-an assistant with arbitrary shell/file access as the same OS user.** Terminal
-checks and skill instructions do not solve that threat. Keep this mock-only until
-a separate user-owned approval interface is implemented and tested.
-
-## MCP and plugin
-
-The official TypeScript MCP SDK serves stdio only, with no open network port.
-Any MCP-compatible local host may launch `node /absolute/path/to/safereach/dist/src/server.js`.
-Set the same private SAFEREACH_HOME for operator and server. No model API/key is needed.
-
-`plugin.json`, `mcp.json` and `skills/safereach/SKILL.md` follow the current
-[portable plugin packaging](https://developers.openai.com/plugins/build/plugins).
-Build the repo before loading it in a supporting local host. The skill teaches
-calm offers, consent and honest mock results. The manifests do not install or
-enable themselves. Host installation and end-user ChatGPT/Codex UI are untested;
-this is not a published plugin listing. Cloud ChatGPT needs a separately secured
-remote transport; this MVP provides none.
-
-Tools: `list_trusted_contacts`, `prepare_handoff`, `send_trusted_message`,
-`cancel_handoff`, `find_support_resources`, `get_official_emergency_info`,
-`read_poke_inbox`, `prepare_poke`. The last two need a separately connected Poke
-session; without private connector settings they fail closed. They cannot send.
-
-## India resource registry
-
-`registry/IN/national.json` contains one national official-source reference, with
-source URLs, verification method, check/expiry dates and reviewer identity.
-It is a seed, not a verified nearby hospital directory. No GPS, remote geocoding,
-distance estimates, opening-hour assertions or resource contact actions exist.
-The [National Portal directory](https://www.india.gov.in/directory/helpline)
-was checked on 2026-11-02; the ERSS website timed out during direct retrieval.
-This is public-source corroboration, not a phone test or operational guarantee.
-
-| Tier | Meaning | Default results |
-| --- | --- | --- |
-| A | Official authority source | Fresh entries eligible |
-| B | Organisation independently verified | Fresh entries eligible |
-| C | Community checked | Exploratory only |
-| D | Unverified submission | Exploratory only |
-
-Expired/future-dated verifications are exploratory only. Ranking prefers freshness
-and tier within the requested category and city; no sponsorship. National entries
-are identified as national. Empty local results mean missing coverage, not no help
-exists. Tiers are maintainer assertions; this MVP has no signed registry pipeline
-or cryptographic proof of reviewers. See [registry guide](registry/README.md).
-
-## Privacy and limits
-
-The AES-256-GCM local vault stores contacts, draft state and audit metadata; file
-modes are 0700/0600 on Unix. The key is beside the ciphertext, so this protects
-neither a compromised OS account nor a backup containing both. No real credentials
-are read. The mock provider makes no network requests. Audit events contain IDs,
-time and outcomes, not numbers, names, messages, location or chat content.
-
-Only three fixed, non-sensitive templates can be previewed; no conversation text
-is ingested. Draft bodies are not user-specific. Drafts expire after five minutes
-and are removed during the next preparation. Audit metadata is bounded to 1000
-records and pruned to 30 days on mutation; daily attempt evidence is preserved.
-These are lazy cleanup rules, not a background deletion guarantee.
-
-Up to three attempts per rolling 24 hours. Consent is consumed and recorded before
-provider I/O. A crash or uncertain attempt is never automatically retried. A
-directory lock serializes processes and fails closed during competition. If a
-process crashes, stop **all** SafeReach processes before inspecting/removing its
-`lock` directory. Never remove vault.key to fix a failure: losing it loses the vault.
-Atomic rename protects normal partial writes; power-loss durability is unverified.
-Windows filesystem permissions have not been validated; use Unix for this MVP.
-
-The [threat model](docs/THREAT_MODEL.md) describes supported boundaries and gaps.
-
-## Docker
-
-```sh
-docker build -t safereach:local .
-docker volume create safereach-data
-docker run --rm -it --network none -v safereach-data:/home/node/.local/share/safereach safereach:local node dist/src/operator.js add-contact
-docker run --rm -i --network none -v safereach-data:/home/node/.local/share/safereach safereach:local
-```
-
-For approval, run a second interactive container against the same volume with
-`node dist/src/operator.js approve <handoff-id>`. No ports are exposed. The image
-uses a non-root user. The Docker build runs tests. Local Docker execution remains
-unverified until a Docker runtime is available; CI includes a build check.
-
-## Next milestone
-
-Test a small, separate human approval UI with screen-reader support, exact-message
-binding, expiry and decline, using fictional people and the mock provider. Then
-design recipient opt-in, revocation and an optional paired check-in inbox. Each
-person would choose whether/where to receive a check-in; neither person's other
-chats would be accessible. No automatic reading or insertion into unrelated chats.
-
-Real SMS, OAuth/hosted tenancy, encrypted key management beyond one OS account,
-custom summaries, separately approved one-time location, verified nearby data,
-signed registry builds and plugin marketplace submission are later milestones.
-See [scope decisions](docs/MVP.md), [contributing](CONTRIBUTING.md), and
-[security reporting](SECURITY.md).
-
-## Built with the community
-
-Anyone may propose features, open issues and submit pull requests. Syntax Error
-Pvt Ltd maintains the repository, reviews changes, and tests/verifies them before
-merge. Feature-request and pull-request templates are included. Start with a small
-improvement or discuss a bigger idea first; see [contribution guidance](CONTRIBUTING.md)
-and the [community conduct policy](CODE_OF_CONDUCT.md).
+[Apache-2.0](LICENSE). [NOTICE](NOTICE) preserves the existing attribution.
+Open-source contributions do not move this project out of the company-maintained
+GitHub namespace. No contributor agreement or assignment is introduced here.

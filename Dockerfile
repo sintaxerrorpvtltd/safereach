@@ -7,6 +7,7 @@ COPY src ./src
 COPY test ./test
 COPY registry ./registry
 COPY web ./web
+COPY site ./site
 RUN npm test && npm prune --omit=dev --ignore-scripts
 
 FROM node:22-bookworm-slim

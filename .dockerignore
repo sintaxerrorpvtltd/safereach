@@ -11,3 +11,5 @@
 !registry/**
 !web/
 !web/**
+!site/
+!site/**

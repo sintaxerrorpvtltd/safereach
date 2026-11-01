@@ -1,5 +1,26 @@
 # Security
 
+## Poki static public demo
+
+Poki — by Sintax Error is a public static website with two fixed fictional people
+and memory-only state in one browser tab. It makes no data API requests and has no
+real account, contact field, browser storage, analytics, notification request or
+outbound message. Its consent checks illustrate behavior, not authentication or
+proof of a human independent of the browser user. GitHub handles ordinary hosting
+requests under its own privacy practices.
+
+Only `site/` is uploaded by the Pages workflow. The Node MCP server, local relay,
+private configuration and Some1 are not deployed. A CSP restricts data connections
+to none, assets/scripts stay local, and event text is rendered as text. Static
+hosting cannot supply production identity, end-to-end encryption or delivery
+guarantees. Any future real messaging, embed SDK, account linking or paid Pro
+service requires a new reviewed trust boundary and explicit status update.
+
+Report site integrity, script injection, misleading permissions or accidental data
+collection through the private reporting route below. See docs/POKI_PRD.md.
+
+## Earlier SafeReach and Poke reference implementations
+
 SafeReach v0.1 is a local, single-user mock prototype, not an emergency service.
 No live SMS, production relay or external messaging credentials exist.
 Do not use it as the only way to reach a person or service.

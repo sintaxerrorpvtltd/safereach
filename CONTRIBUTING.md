@@ -1,5 +1,26 @@
 # Contributing
 
+## Poki — by Sintax Error
+
+Poki is the current public companion/static-demo milestone inside this existing
+SafeReach repository. The company-maintained Apache-2.0 core is open to everyone.
+Read [Poki's PRD](docs/POKI_PRD.md) and its implementation/status boundaries before
+proposing features. Paid Pro and external adapters are planned; no proprietary Pro
+module is included in the current core. Some1 remains a separate commercial product
+and is not a source-code contribution target here.
+
+For the static demo, keep the two fixed fictional people, per-action approval and
+in-tab state. No real contacts, account fields, telemetry, remote messaging or
+browser-wide monitoring may be added as an incidental UI change. New permissions,
+network calls, storage or adapters need a separately discussed scope and tests.
+Keep animation finite, preserve a reduced-motion alternative, and capture the real
+implemented behavior rather than mock live-delivery marketing.
+
+Run `npm test` (23 focused tests at this milestone) and relevant UI checks. Put
+public-site files only in `site/`; the Pages workflow publishes only that folder.
+Never add Some1 code, secrets or customer records to a site artifact. The earlier
+SafeReach/Poke developer workflows below remain available separately.
+
 Anyone can contribute code, tests, translations, accessibility feedback and sourced
 resource proposals. Keep changes small; open an issue for material architecture
 changes. Do not include real contacts, messages, locations, transcripts, credentials
