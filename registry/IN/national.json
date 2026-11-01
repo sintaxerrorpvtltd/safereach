@@ -1,0 +1,10 @@
+[
+  {
+    "id": "in-erss-112", "name": "Emergency Response Support System", "country": "IN",
+    "category": "official_emergency", "phone": "112", "scope": "national",
+    "verification": "A", "sources": ["https://112.gov.in/", "https://www.india.gov.in/directory/helpline"],
+    "verifiedAt": "2026-11-02T00:00:00.000Z", "expiresAt": "2027-11-02T00:00:00.000Z",
+    "verificationMethod": "Official public web references; not phone-tested",
+    "reviewers": ["sintaxerrorpvtltd"], "hours": "unknown"
+  }
+]
