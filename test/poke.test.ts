@@ -135,3 +135,57 @@ test('limited connector uses operator-selected private config; no arbitrary dest
   assert.match(JSON.stringify(preview), /needsInboxApproval/);
   assert.equal((await s.api('state', s.b)).data.inbox.length, 0, 'MCP preparation must not send anything.');
 });
+
+test('personal avatars require browser consent, validate bounded PNG and stay out of MCP state', async t => {
+  const s = await setup(t);
+  const avatar = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD1sAAAAASUVORK5CYII=';
+  const connector = (await s.api('connector', s.a, {})).data.token;
+  for (const data of [{ avatar, agree: false }, { avatar }, { avatar: 'https://example.com/photo.png', agree: true }, { avatar: 'data:image/svg+xml;base64,PHN2Zz4=', agree: true }, { avatar: 'data:image/png;base64,AAAA', agree: true }]) {
+    assert.equal((await s.api('avatar', s.a, data)).ok, false);
+  }
+  assert.equal((await s.api('avatar', connector, { avatar, agree: true })).ok, false);
+  assert.equal((await s.api('avatar', s.a, { avatar, agree: true })).ok, true);
+  assert.equal((await s.api('state', s.a)).data.avatar, avatar);
+  assert.equal((await s.api('state', connector)).data.avatar, undefined);
+  assert.equal(JSON.stringify((await s.api('state', s.b)).data).includes(avatar), false);
+  await s.pair();
+  assert.equal((await s.api('state', s.b)).data.peer.avatar, avatar);
+  assert.equal((await s.api('preview', s.a, {})).ok, true);
+  const preview = (await s.api('state', s.a)).data.previews[0].id;
+  await s.api('avatar', s.a, { avatar: null, agree: true });
+  assert.equal((await s.api('approve', s.a, { id: preview })).ok, false, 'changing avatar invalidates preview');
+  assert.equal((await s.api('state', s.b)).data.peer.avatar, null);
+});
+
+test('received avatar comes from authenticated sender; removal and disconnect clear image access', async t => {
+  const s = await setup(t); await s.pair();
+  const avatar = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD1sAAAAASUVORK5CYII=';
+  await s.api('avatar', s.a, { avatar, agree: true });
+  assert.equal((await s.api('poke', s.a, { from: 'Another person', avatar })).ok, false);
+  const preview = (await s.api('preview', s.a, {})).data.id;
+  await s.api('approve', s.a, { id: preview });
+  const inbox = (await s.api('state', s.b)).data.inbox;
+  assert.equal(inbox[0].from, 'Demo Alex'); assert.equal(inbox[0].avatar, avatar);
+  const connector = (await s.api('connector', s.b, {})).data.token;
+  assert.equal(JSON.stringify((await s.api('state', connector)).data).includes(avatar), false);
+  await s.api('avatar', s.a, { avatar: null, agree: true });
+  assert.equal((await s.api('state', s.b)).data.inbox[0].avatar, null);
+  await s.api('disconnect', s.a, {});
+  assert.equal((await s.api('state', s.b)).data.inbox.length, 0);
+});
+
+test('avatar payload dimensions and upload body remain bounded', async t => {
+  const s = await setup(t);
+  const bytes = Buffer.alloc(33); Buffer.from([137,80,78,71,13,10,26,10]).copy(bytes); bytes.write('IHDR', 12); bytes.writeUInt32BE(10000, 16); bytes.writeUInt32BE(1, 20);
+  assert.equal((await s.api('avatar', s.a, { avatar: `data:image/png;base64,${bytes.toString('base64')}`, agree: true })).ok, false);
+  assert.equal((await s.api('avatar', s.a, { avatar: 'A'.repeat(100001), agree: true })).ok, false);
+});
+
+test('connected static serving fails closed without a build and rejects foreign service origins', async t => {
+  const s = await setup(t);
+  assert.equal((await fetch(`${s.origin}/connected/`)).status, 400);
+  assert.equal((await fetch(`${s.origin}/connected/.env.local`)).status, 400);
+  for (const convexUrl of ['https://evil.example', 'https://test.convex.cloud:444', 'https://test.convex.cloud/path']) {
+    await assert.rejects(startPokeServer({ port: 0, connected: { convexUrl, clerkIssuer: 'https://test.clerk.accounts.dev' } }));
+  }
+});

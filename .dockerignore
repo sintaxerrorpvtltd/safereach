@@ -15,3 +15,5 @@
 !site/**
 !docs/
 !docs/INSTALL.md
+!desktop/
+!desktop/**

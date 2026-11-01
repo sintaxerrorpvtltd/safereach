@@ -50,7 +50,7 @@ test('Poki history is bounded and refresh-equivalent construction carries no sta
 });
 test('Pages artifact is a static allowlist with local assets and no visitor-data API', async () => {
   const root = new URL('../site/', import.meta.url);
-  const files = (await readdir(root)).sort();
+  const files = (await readdir(root)).filter(file => file !== 'app').sort();
   assert.deepEqual(files, ['.nojekyll', 'assets', 'demo-state.mjs', 'index.html', 'poki.mjs', 'styles.css']);
   assert.deepEqual(await readdir(new URL('assets/', root)), ['poki.svg']);
   for (const file of files) assert.equal((await lstat(new URL(file, root))).isSymbolicLink(), false);
@@ -58,7 +58,7 @@ test('Pages artifact is a static allowlist with local assets and no visitor-data
   assert.match(html, /Poki — by Sintax Error/); assert.match(html, /connect-src 'none'/);
   assert.match(html, /Some1 stays a separate commercial product/);
   for (const [, id] of html.matchAll(/href="#([^"]+)"/g)) assert.ok(html.includes(`id="${id}"`), `Missing section ${id}`);
-  for (const asset of [...html.matchAll(/(?:src|href)="(\.\/[^"#]+)"/g)].map(match => match[1])) await lstat(new URL(asset, root));
+  for (const asset of [...html.matchAll(/(?:src|href)="(\.\/[^"#]+)"/g)].map(match => match[1])) if (asset !== './app/') await lstat(new URL(asset, root));
   const client = await readFile(new URL('poki.mjs', root), 'utf8');
   assert.doesNotMatch(client, /\b(?:fetch|XMLHttpRequest|WebSocket|localStorage|sessionStorage|sendBeacon)\b|document\.cookie|innerHTML/);
   const css = await readFile(new URL('styles.css', root), 'utf8');
@@ -79,7 +79,7 @@ test('hero offers the documented safe setup and local app requires a preview', a
   assert.ok(guide.includes(prompt));
   assert.match(prompt, /new isolated folder/);
   assert.match(prompt, /npm ci --ignore-scripts/);
-  assert.match(prompt, /remote friends and automatic Codex popups are not enabled/);
+  assert.match(prompt, /AI avatar generation and automatic Codex chat insertion are not enabled/);
   const client = await readFile(new URL('../web/app.js', import.meta.url), 'utf8');
   assert.doesNotMatch(client, /api\('poke'/);
   assert.match(client, /api\('preview', \{\}\)/);

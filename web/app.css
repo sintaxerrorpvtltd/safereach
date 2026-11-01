@@ -462,3 +462,22 @@ summary {
 .profile strong { display:block; margin-top:8px; overflow-wrap:anywhere; }
 .scope ol { padding-left:20px; }
 .scope li { margin:5px 0; }
+
+[hidden] { display:none!important; }
+.avatar-name { display:flex; align-items:center; gap:12px; margin-block:10px; }
+.avatar-name h2,.avatar-name strong { margin:0; }
+.personal-avatar { display:inline-grid; place-items:center; flex-shrink:0; width:44px; height:44px; border-radius:50%; overflow:hidden; font:22px Georgia,serif; color:#263a32; background:#dfdef5; }
+.personal-avatar[data-color="1"] { background:#e8c5b0; }
+.personal-avatar[data-color="2"] { background:#c8d9b7; }
+.personal-avatar[data-color="3"] { background:#eedda6; }
+.personal-avatar[data-color="4"] { background:#bcdadc; }
+.personal-avatar img { width:100%; height:100%; object-fit:cover; }
+.scene-avatar { position:relative; z-index:2; width:125px; height:125px; font-size:65px; border:5px solid #fffdf8; }
+.received .scene-avatar { animation:hello 900ms ease both; }
+#avatar-settings label { display:block; font-size:12px; line-height:1.6; margin-block:12px 6px; }
+#avatar-settings .check { display:flex; gap:8px; align-items:start; }
+#avatar-file { width:100%; font-size:12px; }
+#avatar-draft-image { display:block; object-fit:cover; border-radius:50%; margin-top:14px; }
+@media(prefers-reduced-motion:reduce) { .received .scene-avatar { animation:none; } }
+.scene-avatar:has(img) { width:180px; height:195px; border:0; border-radius:0; background:transparent; }
+.scene-avatar img { object-fit:contain; }

@@ -10,3 +10,5 @@ dist/
 coverage/
 output/
 *.private.json
+site/app/
+.clerk/

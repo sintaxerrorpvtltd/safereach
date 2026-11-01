@@ -35,6 +35,9 @@ function run(action) {
 }
 function wave(event) {
   const stage = $(`stage-${event.recipient}`);
+  $(`${event.recipient}-avatar`).textContent = PEOPLE[event.sender].slice(0, 1);
+  $(`${event.recipient}-avatar`).dataset.person = event.sender;
+  $(`${event.recipient}-avatar`).setAttribute('aria-label', `${PEOPLE[event.sender]}’s fictional avatar`);
   stage.classList.remove('received');
   void stage.offsetWidth;
   stage.classList.add('received');
@@ -70,7 +73,7 @@ $('decline-demo').addEventListener('click', () => run(() => {
 }));
 $('reset-demo').addEventListener('click', () => run(() => {
   demo.reset(); for (const timer of timers.values()) clearTimeout(timer); timers.clear();
-  for (const id of Object.keys(PEOPLE)) { $(`stage-${id}`).classList.remove('received'); $(`${id}-inbox`).textContent = 'A quiet little corner.'; }
+  for (const id of Object.keys(PEOPLE)) { $(`stage-${id}`).classList.remove('received'); $(`${id}-inbox`).textContent = 'A quiet little corner.'; $(`${id}-avatar`).textContent = PEOPLE[id].slice(0, 1); $(`${id}-avatar`).dataset.person = id; $(`${id}-avatar`).setAttribute('aria-label', `${PEOPLE[id]}’s fictional avatar`); }
   say('Demo reset. Both fictional friends must agree again.');
 }));
 window.addEventListener('pagehide', () => { clearTimeout(expiryTimer); for (const timer of timers.values()) clearTimeout(timer); });

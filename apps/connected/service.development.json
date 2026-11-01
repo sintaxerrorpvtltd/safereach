@@ -1,0 +1,6 @@
+{
+  "environment": "development",
+  "convexUrl": "https://tangible-butterfly-887.convex.cloud",
+  "clerkIssuer": "https://engaging-hawk-7047.clerk.accounts.dev",
+  "clerkPublishableKey": "pk_test_ZW5nYWdpbmctaGF3ay03MDQ3LmNsZXJrLmFjY291bnRzLmRldiQ"
+}

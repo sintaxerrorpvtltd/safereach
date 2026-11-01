@@ -2,10 +2,10 @@
 
 ## Poki — by Sintax Error
 
-Poki is the current public companion/static-demo milestone inside this existing
+Poki is the current free social app and desktop development preview inside this existing
 SafeReach repository. The company-maintained Apache-2.0 core is open to everyone.
 Read [Poki's PRD](docs/POKI_PRD.md) and its implementation/status boundaries before
-proposing features. Paid Pro and external adapters are planned; no proprietary Pro
+proposing features. Optional AI extras and external adapters are planned; no proprietary Pro
 module is included in the current core. Some1 remains a separate commercial product
 and is not a source-code contribution target here.
 
@@ -16,7 +16,7 @@ network calls, storage or adapters need a separately discussed scope and tests.
 Keep animation finite, preserve a reduced-motion alternative, and capture the real
 implemented behavior rather than mock live-delivery marketing.
 
-Run `npm test` (23 focused tests at this milestone) and relevant UI checks. Put
+Run `npm test`, `npm --prefix apps/connected test`, its build, and relevant UI checks. Put
 public-site files only in `site/`; the Pages workflow publishes only that folder.
 Never add Some1 code, secrets or customer records to a site artifact. The earlier
 SafeReach/Poke developer workflows below remain available separately.
@@ -50,7 +50,7 @@ host support and actual device evidence. See docs/POKE_PRD.md.
 Run `npm ci --ignore-scripts` and `npm run check`. Add a focused regression test
 for consent, expiry, revocation, storage and resource-ranking changes. Use only
 fictional recipients. Never test against emergency services or unsolicited people.
-Real provider credentials and deployments are outside this MVP.
+Only isolated development resources are configured. Production changes, real external messaging and paid image calls require an explicit scoped plan.
 
 Resource proposals start at D. Supply official source links and dated evidence,
 coverage, category, verification method and expiry. Do not infer 24/7 availability

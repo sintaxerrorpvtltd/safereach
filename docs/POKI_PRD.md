@@ -1,204 +1,185 @@
-# Poki — by Sintax Error
+# Poki — product requirements
 
-**Implementation-ready PRD · 2026-11-02 · public static demo milestone**
+**Maintained by Sintax Error · open-source social core · development preview**
 
-Poki is the provisional product and companion name. It is a friendly way to say a
-little hello, not a request-for-help or emergency product. No trademark clearance
-or name exclusivity is claimed. It lives in the existing
-`sintaxerrorpvtltd/safereach` repository, maintained by Sintax Error. Preserve the
-existing SafeReach handoff and Poke experiments as separately documented work.
+## Product and ownership
 
-## 1. Product boundary
+Poki lets a person send a small, explicitly approved greeting to a friend who has
+chosen to connect. A friendly avatar/reaction can appear beside their work without
+requiring a full conversation. The app must never imply somebody needs help or
+require medical/emergency language. The ordinary use case is simply “hi”.
 
-Poki is a separate companion product with a genuinely open-source core and an
-optional future paid Pro offering. Some1.help remains its existing commercial
-restaurant product. It may become a first-party Poki Pro customer later; its app,
-private prompts, business logic, authentication, voice, releases, credentials and
-customer records are outside this implementation and must not be copied or changed.
+The public repository is `sintaxerrorpvtltd/safereach`, Apache-2.0. Preserve its Git
+history and earlier SafeReach prototypes. Some1.help remains an entirely separate
+commercial product; do not reuse its projects, accounts, data, prompts or releases.
+Community contributors can propose features through pull requests. Maintainers
+review behavior, tests, privacy, licenses and user impact before accepting them.
 
-The long-term idea is a cute companion across participating websites and explicitly
-linked inboxes. Installing a plugin or being online does not make a person reachable.
-Each host participates deliberately; each person chooses an identity, contacts,
-surface and permissions. No website-wide or browser-wide monitoring is permitted.
-Instagram DMs and Telegram are the planned social-channel priorities. WhatsApp is
-explicitly outside this MVP. Codex, Claude Code and OpenCode are host candidates,
-with the existing Codex/MCP reference labeled experimental until host-tested.
+## Free experience — final scope decision
 
-## 2. Deliver now
+The following stay free to users:
 
-A polished, public, static GitHub Pages website with locally drawn Poki mascot/logo,
-clear product name and ownership, features, how-to, interactive demo, documentation,
-contribution links and an honest implementation-status matrix.
+- Mac and Windows desktop client, browser account app and open-source code.
+- Account signup, unique username, private friend requests and accepted friends.
+- Friend-only availability, DND/invisible, block/remove and local pop-in controls.
+-12 bundled greetings/reactions, each with preview and explicit send approval:
+  Hi, Heart, Wave, Tea, Coffee, Thanks, Cheer, Hug, High five, Sparkle, Thinking of
+  you, Celebrate. Presets call no AI model per send.
+- A first personalized character at signup, generated from the user's photo plus
+  our approved reference style. **This is planned as free, not implemented yet.**
 
-The demo contains only two fixed fictional people, Alex and Sam, in one browser tab.
-The visitor can act out both sides. It has no real account, invite, contact input,
-outbound message, API, analytics, visitor telemetry, browser storage, notification
-permission or background worker. Refreshing discards demo state. GitHub still
-handles normal static hosting requests under its own hosting/privacy policies.
+Free to users does not mean the operator has no hosting/image cost. Track service
+limits and bound generation costs. Use a dedicated future image-provider key, not
+another product's credentials. No provider purchase, billing, checkout or subscription
+is configured in this preview.
 
-The visitor must explicitly accept pairing as each fictional participant, select a
-sender, prepare a fixed “Hi!”, then approve the exact fictional recipient before
-an in-tab animation appears. Preparation alone does not deliver. Unpaired, blocked,
-muted, expired or consumed previews cannot deliver. The user can decline a preview,
-mute, block or reset/unpair. The demo explains these are illustrative local checks,
-not production authentication or proof of an independently attested human click.
+Pro is reserved for optional future AI experiences beyond the included signup
+character. Candidates: additional art styles/outfits, custom pose/animation packs,
+a personalized opt-in AI companion, or user-requested creative reaction generation.
+They are proposals with no price or availability claim. Do not charge for privacy,
+safety controls, basic friendships, the12 presets or the initial signup character.
 
-## 3. Open-core and Pro split
+## Current implementation
 
-| Component | License/status for this milestone |
-| --- | --- |
-| Poki static site, locally drawn mascot, demo state machine and UI | Apache-2.0, implemented in this repository |
-| Existing SafeReach/Poke source, protocol examples, reference/mock adapters, tests and documentation | Existing Apache-2.0 license retained |
-| Future public widget/SDK, published protocol and consent components | Planned Apache-2.0 core; no installable embed SDK is shipped by this milestone |
-| Paid hosted identity, relay operations, durable delivery, managed credentials and advanced administration | Planned Poki Pro service; not deployed, priced or sold here |
-| Future proprietary Pro implementation modules | Not implemented; must be explicitly identified with their own licensing/terms before introduction, outside the Apache core |
-| Some1 application, private prompts/business logic and customer data | Not part of this repository or open-source grant; no integration now |
-| Live accounts, credentials, private user/contact/channel data | Private operational data regardless of surrounding source license |
+| Surface | Implemented | Still limited |
+|---|---|---|
+| Landing website | Copyable Codex setup, visual scroll story, fictional demo, contribution links, free/Pro distinction | Fictional demo never reaches real people |
+| Connected account app | Clerk email auth, profiles/usernames, mutual requests, private availability,12 reactions, inbox | Development service, initials, no generation API |
+| Backend | New Convex project, authoritative auth/ownership/consent, rate/size limits, expiry and block/remove | No production scale/abuse audit or E2EE |
+| Desktop | Sandboxed Electron shell, tray, opt-in finite edge pop-in, constrained IPC, unsigned Mac/Windows packaging | Windows runtime, cross-device/sleep/resume/focus acceptance pending |
+| Offline reference | Temporary two-tab local pairing, image upload/preview/removal, restricted MCP read/prepare | Not the connected account service |
+| Codex/other hosts | Existing MCP protocol reference and source skill/manifest | Connected-account bridge and arbitrary active-chat insertion unverified |
 
-Paid hosting does not itself make source proprietary. Do not relabel restrictive
-source-available code as open source. Do not retroactively place this existing
-Apache-2.0 code under Pro restrictions. This document defines the project scope;
-future commercial/legal terms need their own explicit review.
+## Account and friend journey
 
-## 4. UX and visual contract
+1. Open the account app, or install the desktop developer preview from the website's
+   copyable instruction. Show development status and provider disclosure before use.
+2. Sign up/sign in through the dedicated Poki Clerk application. Do not request an
+   email password through the assistant, copy another app's auth, or silently link
+   an account. The development integration uses embedded email auth; social OAuth
+   is not part of the tested desktop path.
+3. Choose a display name and unique lowercase username,3–24 letters/numbers/_ .
+   Exact-username discovery is off and availability is Invisible by default.
+4. Share a username yourself. Search an exact username; no email search, global
+   people directory, contact import or background contact discovery.
+5. Request a friendship. Recipient must accept; outgoing request alone grants no
+   greeting or presence permission. Decline, cancel, remove and block are available.
+6. Choose Available to share that the Poki app session is connected. A friend list
+   shows available/unavailable and a count. DND, Invisible and disconnected look
+   unavailable; no last-seen time, keyboard/camera/OS-activity or location tracking.
+7. Choose a preset and available friend. Preview its exact recipient, reaction and
+   fixed text. Approve separately. Previewing never sends.
+8. Receiving app shows sender name, personal avatar when available, and reaction.
+   Acknowledgement is private; the sender receives no read receipt.
 
-Poki must be named prominently in the page title, wordmark, hero, demo, README and
-documentation. “By Sintax Error” explains stewardship without claiming that public
-contributions transfer ownership. Everyone may propose features and submit PRs;
-maintainers review and verify accepted changes before merge.
+Limit:100 accepted/pending connections per profile in this preview. Request/search/
+preview cooldowns and a30-second send cooldown apply. Greeting previews expire in
+one minute and inbox greetings after five minutes. Changes in friendship, blocking,
+recipient availability or expiry must be rechecked at send/read time. A replacement
+friendship cannot revive an old preview. No arbitrary message/chat text is accepted.
 
-Use a warm paper background, dark readable ink, blue/purple locally drawn mascot
-and a warm accent. The tone is social, playful and calm. No crisis imagery, medical
-claims, simulated emergency video, fake testimonials, fake user counts or invented
-live integrations. No third-party fonts, stock images or paid media are required.
+## Desktop experience
 
-Motion must have a clear trigger and stop: one finite hello/wave/ripple sequence
-after an approved demo event, with a visible still/text result. Reduced motion
-retains the same information without movement. Never use animation as proof that
-a human saw something. Keyboard controls, clear focus, text labels, readable
-contrast and narrow-screen reflow are part of acceptance.
+The app must work with Codex closed. It watches only its own incoming greeting
+subscription while explicitly Available, not the user's other work or chats.
 
-Required page sections: overview/hero, features, how it works, local demo, core vs
-Pro, status, documentation, contribution call-to-action and privacy footer. Visitors
-can understand the limits before trying the demo. No payment or signup CTA may
-imply Pro is currently available.
+Desktop pop-ins require a separate local opt-in, off at launch. Only new unread
+received greetings produce a pop-in; initial history must never replay. Keep the
+sender name visible even when avatars resemble each other. The popup appears at a
+screen edge for five seconds, is click-through/nonfocusable, and never interrupts
+keyboard focus. No endless bounce, sound, forced response or startup registration.
+Reduced motion uses a still character and text.
 
-## 5. Demo state and authorization
+Close while enabled hides Poki in the tray/menu; Open restores and Quit stops it.
+Close while disabled quits. DND, block, disable and quit must stop unwanted alerts.
+Do not launch native windows during assistant testing without announcing it first.
+Never open Electron.app bare; launch the actual Poki entry point/package.
 
-Only `alex` and `sam` IDs and the literal “Hi!” exist. State is confined to memory.
-A preview binds a unique sequence ID, sender, recipient and expiry. Each side must
-have accepted pairing. A preview expires after 60 seconds, is single-use and must
-be rechecked against mute/block/pair state on approval. Disconnect/reset clears
-consent, previews and event history. Blocking or muting invalidates pending previews
-to that recipient. Event history is bounded. Rendering must use text, not injected
-HTML. No model, backend or channel credential participates in this static demo.
+## Personal characters and shared style
 
-## 6. Architecture and publication
+A person's character identifies that friend; the brand logo does not stand in for
+everyone. Always pair avatar with name. Initials remain a functional fallback.
 
-Use a dedicated `site/` static directory in the existing repo; do not replace the
-earlier Node MCP server or local Poke relay. Use native HTML/CSS/SVG and a small
-browser module. The demo's pure state module is exercised by Node's built-in test
-runner without adding dependencies. Existing CI, Git history and Apache license
-remain intact.
+Use two reference roles: the person's approved photo supplies personal visual cues;
+our selected style reference supplies the shared treatment. See AVATAR_STYLE.md:
+soft2D cartoon people, dark contours, warm colors, minimal cel shadows, friendly
+rounded faces and an open-hand hello. Preserve the face and waving hand in a
+transparent image. The original external reference is not a redistributable asset
+license, and the close style-review cutout stays local. No exact pixel-match claim.
 
-Publish only `site/` through GitHub Pages. Never upload server state, private files,
-credentials, node_modules, Some1 code or the local backend as part of the Pages
-artifact. Use relative asset paths so the project URL works under `/safereach/`.
-Pages deployment should run the repository checks before publishing. The public
-site must be verified by actual URL/content and desktop/mobile browser inspection.
+Planned free signup generation:
 
-## 7. Reuse decision and future gates
+1. Select a photo locally and preview it; request camera permission only if the user
+   chooses camera capture. No background camera or photo-library scanning.
+2. Before upload, disclose provider, image/purpose, retention/deletion and operator
+   generation allowance. Obtain explicit approval; signup alone is not upload consent.
+3. Server authorizes the account and enforces an idempotent included-generation
+   budget. A failed request should not silently consume the successful-avatar slot;
+   no unbounded retries or multi-account generation loop.
+4. Keep raw source private, never deliver it to friends, log it, commit it or put it
+   in a public build. Generate using the versioned style and explicit reference roles.
+5. Show the result; obtain approval before publishing it as the user's avatar.
+   Generation permission and friend-sharing permission are separate.
+6. Delete temporary source/output on cancellation and apply a documented retention
+   policy. Removal cannot recall a copy already seen/saved by another person.
 
-Existing remote assistant transports, including Murmur Connect, are documented in
-[RELATED_WORK.md](RELATED_WORK.md). Read their actual permissions and licensing
-before adoption; none has been installed or validated by this implementation.
-Do not build another remote relay as part of this static milestone.
+Current connected app does not upload or generate photos. The earlier offline
+prototype supports chosen PNG/JPEG/WebP input, local resize/preview and explicit
+avatar-sharing consent to its mutually paired local test friend. Images stay out
+of its restricted MCP responses and invalidate pending outgoing previews on change.
 
-| Capability | Public claim allowed now |
-| --- | --- |
-| Static website and fictional, explicit-consent in-tab animation | Implemented only after checks and public verification |
-| Existing local MCP/Poke reference | Experimental local proof; see its separate docs |
-| Remote friend delivery or automatic active-Codex popup | Planned/unverified; not a shipped capability |
-| Website embed SDK and cross-site identity | Planned; no copy/paste tracker or installable SDK yet |
-| Instagram DMs and Telegram adapters | Planned; no developer account, permission, channel linking or message sending configured |
-| WhatsApp | Outside this MVP |
-| Claude Code / OpenCode and other named host candidates | No Poki compatibility or live integration claimed until individually verified |
-| Paid Pro accounts, hosted relay, billing and credentials | Planned; no prices, purchase, account setup or service promise |
-| Some1 integration | Future first-party Pro customer concept; no source or live changes |
+A full PNG can do a finite whole-character greeting. A hand-only wave needs layered
+artwork/rigging. Do not advertise a still cutout as an animated rig or an image
+provider integration. Style prompt/inputs are data, never executable instructions.
 
-Future outbound actions require explicit account/channel linking, reciprocal contact
-acceptance, exact-recipient per-send authorization, recipient DND/block/revocation,
-abuse limits and honest queued/received/seen distinctions. Third-party platform
-policies require fresh verification at the adapter milestone. A browser companion
-must not gain order authority, private chat access or the ability to inject prompts
-into unrelated work.
+## Architecture and trust
 
-## 8. Acceptance and handoff
+- `apps/connected`: React/Vite, ClerkProvider + ConvexProviderWithClerk, thin identity-
+  keyed profiles, indexed relationships/blocks/greetings and private presence component.
+- Dedicated resources: Clerk app Poki; Convex project poki, development deployment
+  tangible-butterfly-887. No production deploy or Some1 reuse.
+- Browser uses public client settings; no backend/admin/image key enters bundles.
+  Setup refuses to replace a different backend. Account functions derive the user
+  from verified identity and re-authorize all target reads/writes.
+- Electron main owns native capability. Sandboxed renderers have no Node access;
+  fixed IPC accepts only the exact main frame and bounded names/images/reactions.
+  Overlay receives display-only events and has no sending/approval authority.
+- The public landing demo is static with data connections disabled; `/app/` is a
+  distinct real client with exact provider CSP. Build/publish/package allowlists
+  exclude `.env`, photos, private state and administrative credentials.
+- Restricted local MCP can read/prepare for an explicitly configured local paired
+  session. It cannot approve/send/pair. Shell/browser authority as the same OS user
+  is not an independently attested human click; never claim otherwise.
 
-- Save this PRD before implementation; keep the work isolated in SafeReach.
-- Verify pairing, preparation, approval, denial, expiry, replay, mute, block and reset
-  using focused tests against the actual demo state module.
-- Check desktop and mobile rendering, keyboard focus, finite animation, repeated
-  input and reduced motion in a real browser.
-- Preserve earlier tests and run the appropriate existing checks; review the scoped
-  diff, public artifact contents, README claims and dependency changes.
-- Commit and push scoped work, deploy only the static site, and confirm the exact
-  public URL and visible Poki branding before saying it is live.
-- Return site/repo/PRD URLs, commits, actual checks, working vs planned capabilities
-  and concrete limitations. No paid provider, purchase, real messaging, production
-  backend or Some1 changes are authorized by this milestone.
+## Verification and launch gates
 
-## 9. Guided onboarding and integration catalog
+Required: source typecheck/build; ownership/private discovery/presence tests;
+recipient/reaction binding, replay/expiry/rate tests; block/remove/DND; constrained
+preload and runtime publication tests; actual signed Clerk tokens reaching the
+separate Convex deployment; account UI at mobile/desktop sizes.
 
-The intended hosted experience is **Sign in → choose connection → guided setup →
-test**. This static release explains those steps and offers the working fictional
-demo. It must not contain a fake sign-in, OAuth, connected account, functioning
-provider-connect control or collection form. Do not invent support for uncertain
-dictated host names.
+Before calling desktop delivery ready: real two-person test on Mac and Windows,
+foreground/background/sleep/resume, no focus theft, finite timing, tray/quit, offline
+state, repeated greetings and reduced motion. Package success is not runtime proof.
+Before broad production: operator/policy readiness, abuse/load/retention review,
+signing/notarization/update plan, production-specific auth/backend configuration,
+and independent security review. Do not weaken security to bypass OS trust dialogs.
 
-| Adapter | Current status | Minimal guided steps and permissions | Disconnect and test requirements |
-| --- | --- | --- | --- |
-| Browser demo | Built; fixed fictional identities, in-tab only | No sign-in/scopes; accept both sides, preview then approve literal Hi | Refresh/reset clears state; DND/block/decline must work |
-| Instagram DMs | Planned; Meta configuration gate | Later verify eligible account ownership, messaging scopes, application/webhook configuration and any required provider approval | Revoke/unlink and cease delivery; test with explicitly participating accounts within current provider rules |
-| Telegram | Planned; bot/backend gate | Later let the user initiate contact with the bot and verify their linked identity; keep bot credentials on the hosted service | Unlink/block and stop routing; test accepted contact and explicit per-send approval |
-| Codex | Existing MCP protocol reference, stock host onboarding unverified | Review scoped read/prepare credential and exact inbox; no generic conversation access or automated approval | Revoke token/remove MCP connection; test on-demand read and independent approval before claiming support |
-| Claude Code | Candidate, not a verified Poki integration | Confirm current MCP contract and host version; review exact connector permissions before configuration | Verify read/prepare/approval and removal/token revocation in an actual host session |
-| OpenCode | Candidate, not a verified Poki integration | Verify exact product/version and MCP setup, then least-privilege inbox access | Actual host test, explicit approval and complete disconnect evidence required |
-| Website embed | Planned SDK | Participating host origin, public site ID, explicit identity/channel link and user consent; no tracking | Disable loader/revoke host/session; verify guest refusal leaves host features intact |
+Before AI generation: dedicated key, bounded server-only provider adapter, privacy
+and deletion implementation, cost/idempotency tests and image/result consent path.
+The reference cutout made in chat is not that service. No automatic emergency
+calling, medical classification, background chat monitoring or implicit contact.
 
-Provider documentation is evidence of general capability, not proof this product
-works with it. References checked 2026-11-02: [Telegram bot introduction](https://core.telegram.org/bots),
-[Claude Code MCP](https://code.claude.com/docs/en/mcp), [OpenCode MCP](https://opencode.ai/docs/mcp-servers/).
-Meta's [messaging documentation](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/messaging-api)
-returned HTTP 429 during this check; exact current eligibility, scopes and review
-rules must be verified at the adapter milestone. No credentials or permissions
-were requested. Some1 is not a current integration target.
+Instagram and Telegram remain future adapters, each with ownership/scopes/provider
+policy and explicit per-send consent. WhatsApp is outside this MVP. Claude Code and
+OpenCode remain candidates. Active Codex chat insertion is not a supported primitive
+until a specific opt-in host path is verified; reuse existing transports before
+building another relay. See RELATED_WORK.md.
 
-## 10. Company policy and service launch gate
+## Open-source delivery
 
-Company-controlled terms are requested, but no approved legal terms or invented
-business contact is supplied by this static demo. Publish only draft technical
-policy requirements, clearly labeled, in [POLICY_REQUIREMENTS.md](POLICY_REQUIREMENTS.md).
-Before real sign-in or Pro launch: confirm operator identity/contact, applicable
-service/privacy terms, permitted users/regions, retention/deletion, account security,
-support/abuse reporting, channel permissions/revocation and any payment/cancellation
-terms. This is a gated follow-up, not authorization to collect accounts or payments.
-
-## Action-first local onboarding revision — 2026-11-02
-
-The primary website action copies a plain-language Codex instruction pointing to
-this public repository and `docs/INSTALL.md`. It installs into a new local folder,
-tests, and starts `npm run poki`; it does not install a global plugin or promise
-remote delivery. The website remains static with no visitor identity API.
-
-A single character follows four scroll story beats: idea, mutual connection,
-explicit approval, community contribution. All story copy is readable without
-motion; reduced-motion removes the travel transition. The public demo is fictional.
-
-The working local app shows a temporary first-name profile, one reciprocal friend,
-preview plus Send/Decline, finite receipt animation, recent hellos, mute and
-disconnect. Sessions reset on restart. Hosted/persistent identities, multiple
-friends and remote host notifications are future milestones. See INSTALL for the
-actual supported workflow. Pro benefits are proposed, not purchasable features.
-
-The current mascot is a placeholder awaiting Hemang's choice; see MASCOT.md.
+Maintain README, INSTALL, CONTRIBUTING, SECURITY, threat model, tests, Docker and
+honest release notes. Publish static preview assets and clearly labeled unsigned
+developer builds; no private source photos/chats or credentials. License original
+code/art correctly and keep user/third-party content separate. Record exactly what
+was tested, commits, resource identifiers, build locations and next safe milestone.

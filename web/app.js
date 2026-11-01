@@ -9,6 +9,10 @@ let busy = false;
 let animationTimer;
 let previewVersion = '';
 let historyVersion = '';
+let avatarDraft = null;
+let avatarSelection = 0;
+let desktopEnabled = false;
+let inboxLoaded = false;
 if (invitation) { $('welcome').textContent = 'A little hello awaits.'; $('start').firstChild.textContent = 'Join this invitation '; }
 
 async function api(action, data) {
@@ -18,6 +22,15 @@ async function api(action, data) {
   const result = await response.json();
   if (!response.ok) throw new Error(result.error ?? 'Could not complete that action.');
   return result;
+}
+function paintAvatar(id, name, key, image) {
+  const element = $(id);
+  element.replaceChildren();
+  element.dataset.color = String([...key].reduce((sum, character) => sum + character.charCodeAt(0), 0) % 5);
+  if (image && /^data:image\/png;base64,[A-Za-z0-9+/]+={0,2}$/.test(image)) {
+    const img = document.createElement('img'); img.src = image; img.alt = `${name}’s chosen avatar`; element.append(img);
+  } else element.textContent = name.slice(0, 1).toUpperCase();
+  element.setAttribute('aria-label', `${name}’s avatar`);
 }
 function animate(from) {
   $('inbox-event').textContent = `${from} says hi. No reply needed.`;
@@ -34,6 +47,9 @@ async function refresh() {
   $('connection-status').textContent = state.peer ? (state.muted ? 'CONNECTED · INCOMING MUTED' : 'CONNECTED · YOUR CHOSEN PERSON') : 'YOUR PRIVATE TEST INBOX';
   $('own-name').textContent = `Hello, ${state.name}.`;
   $('friend-name').textContent = state.peer?.name ?? '';
+  paintAvatar('profile-avatar', state.name, state.avatarKey, state.avatar);
+  $('remove-avatar').hidden = !state.avatar;
+  if (state.peer) paintAvatar('friend-avatar', state.peer.name, state.peer.avatarKey, state.peer.avatar);
   $('poke').firstChild.textContent = `Preview hello to ${state.peer?.name ?? 'your friend'} `;
   $('mute').textContent = state.muted ? 'Unmute incoming' : 'Mute incoming';
   $('request').hidden = !state.incoming;
@@ -48,7 +64,7 @@ async function refresh() {
     const previews = $('previews'); previews.replaceChildren();
     for (const preview of state.previews) {
     const row = document.createElement('div'); row.className = 'preview';
-    const text = document.createElement('p'); text.textContent = `To ${preview.recipient}: “Hi!” Only this hello is shared.`;
+    const text = document.createElement('p'); text.textContent = `To ${preview.recipient}: “Hi!” Your name and current avatar are included.`;
     const approve = document.createElement('button'); approve.className = 'secondary'; approve.textContent = `Send “Hi!” to ${preview.recipient}`;
     approve.addEventListener('click', () => act(async () => { const result = await api('approve', { id: preview.id }); queued(result); }));
     const cancel = document.createElement('button'); cancel.className = 'text-button'; cancel.textContent = 'Decline';
@@ -65,7 +81,13 @@ async function refresh() {
     }
   }
   const event = state.inbox.at(-1);
-  if (event && event.id !== latest) { latest = event.id; sessionStorage.setItem('safereach-poke-latest', latest); animate(event.from); }
+  $('sender-avatar').hidden = !event; $('scene-avatar').hidden = !event; $('buddy').hidden = !!event;
+  if (event) {
+    paintAvatar('sender-avatar', event.from, event.avatarKey, event.avatar);
+    paintAvatar('scene-avatar', event.from, event.avatarKey, event.avatar);
+  }
+  if (event && event.id !== latest) { latest = event.id; sessionStorage.setItem('safereach-poke-latest', latest); animate(event.from); if (inboxLoaded && desktopEnabled && !state.muted) window.pokiDesktop.showHello({ from: event.from, avatarKey: event.avatarKey, avatar: event.avatar }).catch(() => { $('notice').textContent = 'Desktop pop-in unavailable. Your hello is still in the inbox.'; }); }
+  inboxLoaded = true;
 }
 function queued(result) { $('notice').textContent = `Queued for ${result.recipient}’s inbox. This does not mean they have seen it.`; }
 async function act(work) {
@@ -102,10 +124,63 @@ $('connector').addEventListener('click', () => act(async () => {
 }));
 async function poll() {
   clearTimeout(timer);
-  if (document.hidden) return;
+  if (document.hidden && !desktopEnabled) return;
   if (!busy) try { await refresh(); } catch (error) { $('notice').textContent = `${error.message} Refresh and create a new inbox if the session expired.`; }
   timer = setTimeout(poll, 2000);
 }
-document.addEventListener('visibilitychange', () => { if (document.hidden) clearTimeout(timer); else poll(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden && !desktopEnabled) clearTimeout(timer); else poll(); });
 window.addEventListener('pagehide', () => { clearTimeout(timer); clearTimeout(animationTimer); });
 poll();
+
+function clearAvatarDraft() {
+  avatarSelection++; avatarDraft = null; $('avatar-file').value = ''; $('avatar-agree').checked = false;
+  $('avatar-draft-image').removeAttribute('src'); $('avatar-draft').hidden = true;
+}
+$('avatar-file').addEventListener('change', async () => {
+  const file = $('avatar-file').files[0];
+  clearAvatarDraft();
+  if (!file) return;
+  const selection = avatarSelection;
+  let bitmap;
+  try {
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > 5 * 1024 * 1024) throw new Error('Choose a PNG, JPEG or WebP up to 5 MB.');
+    bitmap = await createImageBitmap(file);
+    if (bitmap.width > 8192 || bitmap.height > 8192) throw new Error('Choose an image smaller than 8192 pixels per side.');
+    const canvas = document.createElement('canvas'); canvas.width = canvas.height = 128;
+    const scale = 128 / Math.max(bitmap.width, bitmap.height);
+    const width = bitmap.width * scale, height = bitmap.height * scale;
+    canvas.getContext('2d').drawImage(bitmap, (128 - width) / 2, (128 - height) / 2, width, height);
+    const encoded = canvas.toDataURL('image/png');
+    if (encoded.length > 85000) throw new Error('Choose a simpler or smaller image for this local prototype.');
+    if (selection !== avatarSelection) return;
+    avatarDraft = encoded;
+    $('avatar-draft-image').src = avatarDraft; $('avatar-draft').hidden = false;
+    $('notice').textContent = 'Preview only. Your image has not been sent to the local server or any AI provider.';
+  } catch (error) { if (selection === avatarSelection) $('notice').textContent = error.message; }
+  finally { bitmap?.close(); }
+});
+$('cancel-avatar').addEventListener('click', clearAvatarDraft);
+$('save-avatar').addEventListener('click', () => act(async () => {
+  if (!avatarDraft || !$('avatar-agree').checked) throw new Error('Review the image and agree to share this avatar with your connected test friend.');
+  await api('avatar', { avatar: avatarDraft, agree: true }); clearAvatarDraft();
+  $('notice').textContent = 'Avatar saved on this local test server. Prepare a fresh hello to use it.';
+}));
+$('remove-avatar').addEventListener('click', () => act(async () => {
+  await api('avatar', { avatar: null, agree: true }); clearAvatarDraft();
+  $('notice').textContent = 'Image removed from this local profile. Initials are used instead.';
+}));
+
+if (window.pokiDesktop) {
+  $('desktop-settings').hidden = false;
+  $('desktop-popins').addEventListener('change', async event => {
+    try {
+      desktopEnabled = await window.pokiDesktop.setEnabled(event.target.checked);
+      event.target.checked = desktopEnabled;
+      $('notice').textContent = desktopEnabled ? 'Desktop pop-ins enabled for new hellos while Poki runs.' : 'Desktop pop-ins disabled.';
+      poll();
+    } catch {
+      desktopEnabled = false; event.target.checked = false;
+      $('notice').textContent = 'Could not enable desktop pop-ins. Your browser inbox still works.';
+    }
+  });
+}

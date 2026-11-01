@@ -2,9 +2,9 @@ import { randomBytes, randomUUID } from 'node:crypto';
 import { requireSafe } from './model.js';
 
 type Preview = { id: string; peerId: string; expiresAt: number };
-type Poke = { id: string; from: string; at: number };
+type Poke = { id: string; from: string; fromId: string; at: number };
 type Person = {
-  id: string; name: string; expiresAt: number; browserToken: string; connectorToken?: string;
+  id: string; name: string; avatar?: string; expiresAt: number; browserToken: string; connectorToken?: string;
   peerId?: string; incomingId?: string; waitingFor?: string; muted: boolean;
   previews: Preview[]; inbox: Poke[]; attempts: number[];
 };
@@ -40,11 +40,18 @@ export class PokeRelay {
   state(person: Person, browser: boolean) {
     const peer = person.peerId ? this.people.get(person.peerId) : undefined;
     const incoming = person.incomingId ? this.people.get(person.incomingId) : undefined;
-    return { name: person.name, expiresAt: person.expiresAt, muted: person.muted,
-      peer: peer ? { name: peer.name } : null,
+    return { name: person.name, ...(browser ? { avatar: person.avatar ?? null, avatarKey: person.id } : {}), expiresAt: person.expiresAt, muted: person.muted,
+      peer: peer ? { name: peer.name, ...(browser ? { avatar: peer.avatar ?? null, avatarKey: peer.id } : {}) } : null,
       incoming: browser && incoming ? { id: incoming.id, name: incoming.name } : null,
-      waiting: !!person.waitingFor, inbox: person.inbox,
+      waiting: !!person.waitingFor, inbox: person.inbox.map(event => ({ id: event.id, from: event.from, at: event.at, ...(browser ? { avatarKey: event.fromId, avatar: this.people.get(event.fromId)?.avatar ?? null } : {}) })),
       previews: browser ? person.previews.map(p => ({ id: p.id, recipient: this.people.get(p.peerId)?.name, expiresAt: p.expiresAt })) : [] };
+  }
+  setAvatar(person: Person, avatar: string | null) {
+    if (avatar === null) delete person.avatar;
+    else person.avatar = avatar;
+    // A changed sender image needs a fresh send preview.
+    person.previews = [];
+    return { status: avatar ? 'avatar-saved' : 'avatar-removed' };
   }
   invite(person: Person) {
     requireSafe(!person.peerId && !person.incomingId && !person.waitingFor, 'Disconnect or finish your current connection first.');
@@ -108,7 +115,7 @@ export class PokeRelay {
       'Give them a moment. Pokes are limited to one per 30 seconds and ten per hour.');
     if (previewId) person.previews = person.previews.filter(p => p.id !== previewId);
     person.attempts.push(this.now());
-    peer.inbox.push({ id: randomUUID(), from: person.name, at: this.now() });
+    peer.inbox.push({ id: randomUUID(), from: person.name, fromId: person.id, at: this.now() });
     peer.inbox = peer.inbox.slice(-20);
     return { status: 'queued', recipient: peer.name, seen: false };
   }

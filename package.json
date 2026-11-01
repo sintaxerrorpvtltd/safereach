@@ -6,23 +6,36 @@
   "license": "Apache-2.0",
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12"
   },
   "scripts": {
     "build": "tsc",
     "start": "node dist/src/server.js",
     "operator": "node dist/src/operator.js",
     "inbox": "node dist/src/poke-server.js",
-    "test": "npm run build && node --test dist/test/*.test.js test/*.test.mjs",
+    "test": "npm run build && node --test dist/test/*.test.js test/*.test.mjs desktop/*.test.mjs",
     "check": "npm test && npm audit --omit=dev",
-    "poki": "npm run build && npm run inbox"
+    "poki": "npm run build && npm run inbox",
+    "desktop:setup": "node desktop/setup.mjs",
+    "desktop": "npm run build && electron .",
+    "desktop:pack:mac": "npm run build && node desktop/package.mjs darwin",
+    "desktop:pack:win": "npm run build && node desktop/package.mjs win32",
+    "desktop:connected": "npm run build && npm --prefix apps/connected run build && electron . --connected",
+    "desktop:pack:connected:mac": "npm run build && npm --prefix apps/connected run build && node desktop/package.mjs darwin --connected",
+    "desktop:pack:connected:win": "npm run build && npm --prefix apps/connected run build && node desktop/package.mjs win32 --connected",
+    "connected:setup": "npm --prefix apps/connected ci --ignore-scripts && node apps/connected/setup.mjs",
+    "site:build": "npm --prefix apps/connected run build && node scripts/publish-site.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.32.2",
     "zod": "4.6.7"
   },
   "devDependencies": {
+    "@electron/packager": "20.3.0",
     "@types/node": "22.20.5",
+    "electron": "45.2.1",
     "typescript": "5.9.3"
-  }
+  },
+  "main": "desktop/main.mjs",
+  "productName": "Poki"
 }

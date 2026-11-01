@@ -83,3 +83,44 @@ demo is not authentication or independent approval against its browser owner.
 - No real remote friend, production identity, social adapter, automatic Codex
   notification, screen reader or physical mobile device was tested. Current
   mascot remains a placeholder pending user selection.
+
+## Personal avatar checkpoint — 2026-11-02
+
+- 28/28 local tests including bounded PNG validation, browser-only avatar changes,
+  explicit consent, image exclusion from MCP state, sender binding, preview
+  revocation and removal from subsequent peer/history responses.
+- Browser upload used a synthetic96px test swatch, no real person's photo.
+  Unsaved preview did not change the profile. Save without consent was rejected;
+  explicit consent saved it. After an approved hello, the receiving animation
+  showed the authenticated sender's image (naturalWidth96) and name. Removal
+  restored initials in the recipient. No console errors in the inspected inbox.
+- Shared cartoon direction is documented in AVATAR_STYLE.md. Private image-tool
+  preview is a still, not the application's image-generation service. No raw
+  reference/photo, provider key, image API, paid service or new dependency added.
+
+## Connected app and desktop checkpoint — 2026-11-02
+
+- New Clerk app Poki (app_3LWPjl5PNDGbQSct5OVsvaALmYe), development issuer
+  engaging-hawk-7047.clerk.accounts.dev. New Convex project poki, development
+  tangible-butterfly-887 under sintax-error-private-limited. No Some1 resource reused.
+- Live integration used only two reserved +clerk_test@example.com identities.
+  Real Clerk-signed, audience=convex tokens authenticated to the new deployment;
+  exact lookup, mutual friend acceptance, private availability, heart preview with
+  no delivery, exact approval, tamper/replay denial, DND and blocking passed. Test
+  sessions were revoked; profiles were left undiscoverable and Invisible. No real
+  email or external person was contacted. This is API-level cloud evidence, not
+  a physical cross-device acceptance test.
+- Connected UI: actual email-only Clerk form rendered; desktop and390px layout
+  inspected, no horizontal overflow. SDK first load was slow. Telemetry disabled
+  in ClerkProvider; provider operational requests still exist.
+- Mac Electron native launch and unsigned packaging passed. Both Mac-arm64 and
+  Windows-x64 unsigned package builds passed before final release rebuild.
+  A bare Electron starter window was accidentally opened during UI inspection;
+  user was informed, all native test processes were stopped and their relay closed.
+  No further native windows will be launched in this work session.
+- Native popup timing/focus/tray, Windows runtime, real two-device exchanges,
+  sleep/resume and final generated-art visual acceptance remain unverified.
+- Connected photo generation remains unimplemented and planned FREE at signup;
+  only later optional AI extras are Pro proposals. No image-provider key/API/billing.
+- Added a regression guard preventing block-list operations from becoming a
+  private-profile lookup by guessed ID, and deployed the fix to the Poki dev backend.

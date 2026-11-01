@@ -1,7 +1,8 @@
 # Choosing Poki's character
 
-The current blue SVG is a placeholder. Hemang will select a replacement before we
-finalize the character. Keep the code and character licensing separate: third-party
+The current blue brand SVG is a placeholder. Hemang selected a soft2D waving-person
+direction for personal avatars; see AVATAR_STYLE.md. Every friend has their own
+avatar and display name; a shared brand character cannot identify the sender. Keep the code and character licensing separate: third-party
 artwork does not become Apache-2.0 just because this repository is.
 
 Start with a transparent SVG and its editable source. For independently moving a
