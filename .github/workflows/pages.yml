@@ -18,8 +18,14 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/connected/package-lock.json
       - run: npm ci --ignore-scripts
       - run: npm run check
+      - run: npm run connected:setup
+      - run: npm --prefix apps/connected test
+      - run: npm run site:build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
@@ -35,6 +41,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy static Poki site
+      - name: Deploy static Poki site and development account client
         id: deployment
         uses: actions/deploy-pages@v4
