@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
 import { startPokeServer } from '../dist/src/poke-server.js';
 import { edgeBounds, validateHello, connectedOrigins } from './helpers.mjs';
+import { isClerkProtectionUrl } from '../dist/src/connected-policy.js';
 
 app.setName('Poki');
 let dashboard, overlay, tray, relay, enabled = false, quitting = false, hideTimer, lastHello = 0;
@@ -23,7 +24,7 @@ app.whenReady().then(async () => {
   isolated.setPermissionCheckHandler(() => false);
   isolated.webRequest.onBeforeRequest((details, callback) => {
     let allowedOrigin = false;
-    try { allowedOrigin = remoteOrigins.includes(new URL(details.url).origin); } catch {}
+    try { allowedOrigin = remoteOrigins.includes(new URL(details.url).origin) || Boolean(connected && details.resourceType !== 'mainFrame' && isClerkProtectionUrl(details.url)); } catch {}
     callback({ cancel: !allowedOrigin && !details.url.startsWith(`${relay.origin}/`) && !details.url.startsWith('data:image/png;') && !details.url.startsWith(`blob:${relay.origin}/`) });
   });
   const preferences = { session: isolated, sandbox: true, contextIsolation: true, nodeIntegration: false, webSecurity: true, backgroundThrottling: false };

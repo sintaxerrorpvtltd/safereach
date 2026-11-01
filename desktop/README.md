@@ -77,8 +77,11 @@ its own locked dependencies, `npm run desktop:connected` builds that frontend an
 opens its `/connected/` screen. Its public `runtime-config.json` contains only a
 Clerk publishable key/issuer and a Convex URL. It is not a secret file. The shell
 validates exact HTTPS Clerk-development and Convex origins, allows the matching
-Convex WSS origin and `https://img.clerk.com`, and still blocks other network
-origins. Auth navigation stays inside the dashboard's hash route. Native sign-in,
+Convex WSS origin and `https://img.clerk.com`. Clerk's documented HTTPS protection
+subresources (`*.protect.clerk.com`, including nonstandard ports, and
+`challenges.cloudflare.com`) are also allowed. Other network origins remain blocked;
+protection resources cannot be top-level destinations or access the native bridge.
+Auth navigation stays inside the dashboard's hash route. Native sign-in,
 remote friend delivery and cross-platform pop-ins require separate runtime checks.
 
 `npm run desktop:pack:connected:mac` and `npm run desktop:pack:connected:win`

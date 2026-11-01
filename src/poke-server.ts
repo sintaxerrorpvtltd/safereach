@@ -4,6 +4,7 @@ import { pathToFileURL } from 'node:url';
 import { z } from 'zod';
 import { SafeError, requireSafe } from './model.js';
 import { PokeRelay } from './poke.js';
+import { connectedContentPolicy } from './connected-policy.js';
 
 const name = z.string().trim().min(1).max(40).regex(/^[\p{L}\p{N} .'-]+$/u);
 async function body(request: IncomingMessage, limit = 2048) {
@@ -42,7 +43,7 @@ export async function startPokeServer(options: { port?: number; host?: string; p
       requireSafe(stat.isFile() && stat.size <= 5000000, 'Unsafe connected asset.');
       connectedAssets.set(`/connected/assets/${file}`, await readFile(target));
     }
-    connectedPolicy = `default-src 'self'; script-src 'self' ${clerkIssuer}; style-src 'self' 'unsafe-inline'; connect-src 'self' ${clerkIssuer} ${convexUrl} ${convexUrl.replace('https:', 'wss:')}; img-src 'self' data: https://img.clerk.com; font-src 'self' data:; frame-src ${clerkIssuer}; frame-ancestors 'none'; base-uri 'none'; form-action 'self' ${clerkIssuer}; object-src 'none'`;
+    connectedPolicy = connectedContentPolicy(clerkIssuer, convexUrl, true);
   }
   const rates = new Map<string, { at: number; count: number }>();
   const server = createServer(async (request, response) => {

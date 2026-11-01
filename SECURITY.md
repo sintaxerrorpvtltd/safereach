@@ -42,7 +42,10 @@ or accidental secret/photo publication through the private reporting route below
 
 The landing demo uses fictional people in one tab and no data connections. The
 separate `/app/` route is a real development client using Clerk and Convex; its CSP
-permits only the configured provider origins. The Pages artifact includes only
+permits the configured provider origins and Clerk's documented protection resources
+(`*.protect.clerk.com`, Cloudflare challenges and first-party blob workers).
+Protection hosts are limited to their required directives; arbitrary HTTPS scripts
+remain blocked. The Pages artifact includes only
 static built client assets/public settings, never server functions or secrets.
 No analytics or conversation monitoring is installed. GitHub, Clerk and Convex
 handle their normal service requests under their own policies.

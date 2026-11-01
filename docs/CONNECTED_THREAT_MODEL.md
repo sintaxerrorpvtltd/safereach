@@ -52,6 +52,14 @@ trusted app code; IPC validation is not an independently attested human click.
 
 Auth return URLs preserve the current application path, including GitHub Pages project subpaths, and discard caller-supplied redirect queries (apps/connected/src/location.ts).
 
+The shared web/loopback CSP also permits Clerk's documented protection scripts,
+frames, HTTPS connections and first-party blob workers. Electron allows HTTPS
+protection subresources on boundary-checked `*.protect.clerk.com` hosts (including
+documented nonstandard ports) and `challenges.cloudflare.com`, never as top-level
+navigation. These vendor resources run in the renderer's web trust boundary; they
+do not gain native bridge or send authority. See src/connected-policy.ts and its
+negative hostname/protocol tests.
+
 The connected service is development-only, not a production or E2EE claim. Clerk,
 Convex and GitHub retain their normal service-side access/logging. No connected photo
 or AI-generation API is deployed. A free signup avatar is planned but must introduce

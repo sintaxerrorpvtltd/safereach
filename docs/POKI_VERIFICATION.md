@@ -150,3 +150,23 @@ Source: de943468804590743ec2671ba1db62fbcafc2199.
   final packaging. Windows native runtime, native popup timing/focus and physical
   two-computer acceptance remain pending. First free signup-avatar generation is
   still a documented next milestone, not an enabled API.
+
+## Sign-in failure follow-up
+
+- User supplied a Safari screenshot of Clerk's security rejection. Reproduced a
+  related concrete configuration failure on the published app: Chromium security
+  logs show CSP blocked both Clerk's blob worker and `cdn.protect.clerk.com`
+  bootstrap script. A passing reserved-email login had not established a fresh
+  signup or Safari acceptance. The screenshot's provider reference alone cannot
+  prove that CSP was the only cause of that specific request's rejection.
+- Centralized the web and desktop-loopback CSP and permitted the documented Clerk
+  protection resources, without disabling provider protections or broadening
+  arbitrary script access. Electron's request filter now matches that requirement.
+- Added focused positive/negative CSP and desktop-host tests. Local checks pass:
+  36 root, 13 connected and 3 setup tests; both app builds pass.
+- Codex reviewed all six code/style files selected by OCR Delegation Mode and
+  manually reviewed the one excluded regression-test file. No separate model or
+  external code-review service was used.
+- Sign-in now explains the steps, provides a restart action after refusal and
+  links to the no-signup fictional demo. It does not advise disabling browser
+  protections or imply that an unsuccessful login succeeded.
