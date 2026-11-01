@@ -124,3 +124,29 @@ demo is not authentication or independent approval against its browser owner.
   only later optional AI extras are Pro proposals. No image-provider key/API/billing.
 - Added a regression guard preventing block-list operations from becoming a
   private-profile lookup by guessed ID, and deployed the fix to the Poki dev backend.
+
+## Release candidate v0.1.0-alpha.1
+
+Source: de943468804590743ec2671ba1db62fbcafc2199.
+
+- Root:34/34 tests; connected:13/13 plus3/3 setup tests. Both production dependency
+  audits report zero. CI Checks41352308294 and Pages41352308472 succeeded, including
+  the Docker build and an isolated nested-app install/typecheck/build.
+- The isolated CI job caught an undeclared Node type dependency masked by parent
+  dependencies locally; it was declared and the standalone job passed.
+- Public browser account test: reserved email-code sign-in, exact username lookup,
+  request, synthetic recipient acceptance, friend availability, heart preview and
+  approval, and a returning wave all passed against the actual cloud app. No real
+  external email, friend or person was contacted. Screenshot: output/poki-live-friends.png
+  (ignored local evidence; not a fixture or user-data publication).
+- Live sign-in initially returned to the GitHub domain root. A tested path-preserving
+  redirect helper now keeps auth returns on /safereach/app/ and /connected/. Fresh
+  release entry was used to avoid a cached earlier HTML bundle.
+- Both final connected Mac-arm64 and Windows-x64 unsigned packages were rebuilt.
+  Payload checks exclude env, private source, test data and Electron download caches.
+  Cached platform downloads were found and excluded before release, reducing the
+  archives to about122MiB/156MiB. Checksums accompany the GitHub prerelease.
+- All native GUI test processes were stopped. No desktop windows were opened during
+  final packaging. Windows native runtime, native popup timing/focus and physical
+  two-computer acceptance remain pending. First free signup-avatar generation is
+  still a documented next milestone, not an enabled API.

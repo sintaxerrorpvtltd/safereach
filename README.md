@@ -92,3 +92,7 @@ content. The supplied external illustration and close generated style-review
 sample are not redistributed or relabeled as Apache-2.0 assets. New public artwork
 must have a recorded source/license. Future proprietary AI operations/modules must
 be clearly separated from the open-source core.
+
+Unsigned developer app downloads and SHA-256 checksums:
+[v0.1.0-alpha.1](https://github.com/sintaxerrorpvtltd/safereach/releases/tag/v0.1.0-alpha.1).
+Use the browser preview first; native device acceptance remains pending.

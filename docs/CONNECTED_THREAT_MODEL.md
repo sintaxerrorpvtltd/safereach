@@ -50,6 +50,8 @@ uses a five-second hide timer and respects reduced motion. Actual OS focus/timin
 sleep/resume and Windows behavior still need device acceptance. The renderer remains
 trusted app code; IPC validation is not an independently attested human click.
 
+Auth return URLs preserve the current application path, including GitHub Pages project subpaths, and discard caller-supplied redirect queries (apps/connected/src/location.ts).
+
 The connected service is development-only, not a production or E2EE claim. Clerk,
 Convex and GitHub retain their normal service-side access/logging. No connected photo
 or AI-generation API is deployed. A free signup avatar is planned but must introduce
@@ -87,4 +89,4 @@ provider limits and missing image APIs are evidence/product gaps, not themselves
 proof of a vulnerability.
 
 Repository: https://github.com/sintaxerrorpvtltd/safereach
-Version: source snapshot SHA-256 4b3ffe48fd12f950f1b76f78a09ab2bb137cc83ee1025fe92691aef76fdf1706
+Version: source snapshot SHA-256 084479c95ee2bf7e4a785d3128a1cbb8ee41afdd7d458bf5cfe85757a8a2b26d
