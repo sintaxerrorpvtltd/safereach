@@ -170,3 +170,36 @@ Source: de943468804590743ec2671ba1db62fbcafc2199.
 - Sign-in now explains the steps, provides a restart action after refusal and
   links to the no-signup fictional demo. It does not advise disabling browser
   protections or imply that an unsuccessful login succeeded.
+
+Final repair source: ab0a1605eb5e49f7c66f7e8c3ae9fb317caa8019.
+
+- Live protection bootstrap and probe requests now return 200/204. The original
+  failure was recorded using Chromium's security log, which ordinary app-console
+  logs did not expose. A cached earlier HTML entry reappeared after auth redirected;
+  versioned `?poki=auth2` entry and auth returns prevent that tested regression.
+- Repeated live reserved-account sign-in, exact discovery, request/accept,
+  availability, approved Heart delivery and a returning approved Wave passed.
+  Recipient test-session JWTs are refreshed during the bounded synthetic-client
+  test; its initial harness failed on the intended 60-second token expiry and was
+  corrected. This was not a browser-session or backend-token-validation bypass.
+- Fresh browser signup found that Clerk still required a password despite
+  email-code sign-in. Changed only `auth_password.required` to false in the
+  separate Poki development instance. Email verification remains required;
+  password security checks and provider protections were not disabled.
+- A new reserved-email account then completed email-code signup, chose a valid
+  username, created a profile and reloaded successfully with discovery off and
+  Invisible selected. Test profiles remain private; the temporary friendship was
+  removed and the recipient session revoked. No real friend or email recipient
+  was contacted.
+- Checks 41354763899 and Pages 41354763769 passed for the final repair source,
+  including the Docker build. The 52 local automated tests and both builds passed.
+- Mac and Windows packages were rebuilt with the corrected CSP and auth entry.
+  Static payload checks verified the shared policy module, auth2 frontend, and
+  absence of Electron download caches. Mac ZIP preserves framework symlinks.
+- Safari's exact screenshot rejection and Windows/native pop-in behavior remain
+  unverified. The correction addresses reproduced configuration defects; it does
+  not promise that every provider security refusal is eliminated.
+- Final source-range review covered all nine OCR-selected files and manually
+  reviewed all six excluded documentation/test files. The added handover text and
+  release links were also checked. Sign-out and Restart sign-in returned to auth2;
+  a final reload recorded no security-log errors or CSP-blocked requests.

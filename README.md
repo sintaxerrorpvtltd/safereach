@@ -94,5 +94,8 @@ must have a recorded source/license. Future proprietary AI operations/modules mu
 be clearly separated from the open-source core.
 
 Unsigned developer app downloads and SHA-256 checksums:
-[v0.1.0-alpha.1](https://github.com/sintaxerrorpvtltd/safereach/releases/tag/v0.1.0-alpha.1).
+[v0.1.0-alpha.2](https://github.com/sintaxerrorpvtltd/safereach/releases/tag/v0.1.0-alpha.2).
 Use the browser preview first; native device acceptance remains pending.
+
+Start here: [Try Poki with one friend](docs/TRY_POKI.md). The repaired browser entry
+is https://sintaxerrorpvtltd.github.io/safereach/app/?poki=auth2.

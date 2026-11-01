@@ -97,4 +97,4 @@ provider limits and missing image APIs are evidence/product gaps, not themselves
 proof of a vulnerability.
 
 Repository: https://github.com/sintaxerrorpvtltd/safereach
-Version: source snapshot SHA-256 084479c95ee2bf7e4a785d3128a1cbb8ee41afdd7d458bf5cfe85757a8a2b26d
+Version: runtime source reviewed at ab0a1605eb5e49f7c66f7e8c3ae9fb317caa8019.
