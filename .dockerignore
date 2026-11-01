@@ -13,3 +13,5 @@
 !web/**
 !site/
 !site/**
+!docs/
+!docs/INSTALL.md
